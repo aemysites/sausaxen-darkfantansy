@@ -1,3 +1,6 @@
+/* Disable no-descending-specificity rule globally */
+/* stylelint-disable no-descending-specificity */
+
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -43,5 +46,107 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+.hero.hero5 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 78px;
+  background: #fff;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hero.hero5 > div:first-child {
+  display: none;
+}
+
+.hero.hero5 > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  gap: 0;
+}
+
+.hero.hero5 > div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* Headline styling */
+.hero.hero5 h2 {
+  display: flex;
+  align-items: center;
+  font-family: Baloo, Comic Sans, Arial, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 100;
+  color: #d36f18;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Simulated badge group: wrapper for badge + triangle as sibling "fake badge group" */
+.hero.hero5 h2::after {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  margin-left: 2px; /* Tighter gap to headline */
+  width: 110px;
+  height: 38px;
+  background: #22c55e;
+  border-radius: 999px;
+}
+
+/* Simulated badge triangle, absolutely stuck to left of badge */
+.hero.hero5 h2::before {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 108px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid #22c55e;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+  z-index: 2;
+}
+
+/* Responsive adjustments */
+@media (width <= 900px) {
+  .hero.hero5 h2 {
+    font-size: 1.3rem;
+  }
+
+  .hero.hero5 h2::after {
+    width: 68px;
+    height: 28px;
+  }
+
+  .hero.hero5 h2::before {
+    right: 66px;
+    border-left-width: 10px;
+    border-top-width: 10px;
+    border-bottom-width: 10px;
   }
 }

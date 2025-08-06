@@ -58,121 +58,138 @@
 }
 
 
+.tabs.tab23 {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center tabs vertically within the block */
+  min-height: 90px; /* Ensure enough space for tails */
+  box-sizing: border-box;
+  background: transparent;
+}
+
 .tabs.tab23 .tabs-list {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0;
-  height: 54px;
+  gap: 24px;
   padding: 0;
   margin: 0;
-  background: transparent;
   border: none;
+  background: transparent;
   position: relative;
-  overflow: visible;
+  box-sizing: border-box;
+  z-index: 0;
+  width: auto;
+  height: 66px; /* Height of the bubbles themselves; not including tails */
+  min-height: 66px;
 }
 
-.tabs.tab23 .tabs-list .tabs-tab {
+/* Bubble style for tabs */
+.tabs.tab23 .tabs-tab {
   position: relative;
-  min-width: 120px;
-  height: 48px;
-  padding: 0 36px;
-  margin: 0 -14px 0 0;
-  background: #CCC;
-  border: none;
-  border-radius: 22px;
-  font-family: 'Open Sans', Arial, sans-serif;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 48px;
-  color: #222;
-  box-shadow: 0 4px 14px 0 rgb(0 0 0 / 8%);
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 130px;
+  min-height: 56px;
+  padding: 0 42px;
+  border: none;
+  border-radius: 24px;
+  background: #CACACA;
+  font-family: 'Open Sans', Arial, system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  box-shadow: none;
   text-align: center;
-  z-index: 1;
-  outline: none;
-  transition: background 0.2s, color 0.2s, z-index 0.2s;
+  line-height: 1.2;
   cursor: pointer;
+  outline: none;
   overflow: visible;
+  margin: 0;
+  z-index: 1;
+  appearance: none;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* Active/selected tab (orange) */
-.tabs.tab23 .tabs-list .tabs-tab[aria-selected="true"] {
-  background: #D9731A;
-  color: #fff;
-  z-index: 2;
+/* Orange for active tab */
+.tabs.tab23 .tabs-tab[aria-selected="true"] {
+  background: #DC740D;
+  color: #000;
 }
 
-/* No borders between tabs and moderate overlap */
-.tabs.tab23 .tabs-list .tabs-tab + .tabs-tab {
-  border-left: none;
-  margin-left: 0;
-}
-
-/* Slightly larger, flush triangle tail */
-.tabs.tab23 .tabs-list .tabs-tab::before {
+/* Triangle speech bubble tail using a border trick, no content property needed */
+.tabs.tab23 .tabs-tab::after {
   display: block;
   position: absolute;
   left: 50%;
-  bottom: -6px;
+  bottom: -15px; /* Space below the bubble for tail */
   transform: translateX(-50%);
-  width: 18px;
-  height: 9px;
-  background: inherit;
-  clip-path: polygon(50% 100%, 0 0, 100% 0);
-  z-index: 1;
-  margin: 0;
-  border: none;
-  box-shadow: none;
-  content: "";
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 15px solid #CACACA;
+
+  /* No content property */
 }
 
-/* Tab label styling */
-.tabs.tab23 .tabs-list .tabs-tab p {
+/* Orange tail for active tab */
+.tabs.tab23 .tabs-tab[aria-selected="true"]::after {
+  border-top-color: #DC740D;
+}
+
+/* Ensure text is visible and well-styled */
+.tabs.tab23 .tabs-tab p {
   margin: 0;
   padding: 0;
   font-family: inherit;
-  font-weight: bold;
+  font-weight: inherit;
   font-size: inherit;
   color: inherit;
   text-align: center;
   line-height: inherit;
+  z-index: 2;
+  position: relative;
 }
 
-/* Accessibility focus outline */
-.tabs.tab23 .tabs-list .tabs-tab:focus {
-  outline: 2px solid #D9731A;
-  outline-offset: 2px;
+/* No unwanted margin between tabs */
+.tabs.tab23 .tabs-tab + .tabs-tab {
+  margin-left: 0;
 }
 
-/* Responsive stacking for small screens */
+/* Remove outlines/borders from panels if showing through */
+.tabs.tab23 .tabs-panel {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+/* Responsive: stack vertically on small screens */
 @media (width <= 600px) {
-  .tabs.tab23 .tabs-list {
-    flex-direction: column;
-    align-items: stretch;
+  .tabs.tab23 {
+    min-height: 0;
     height: auto;
+    align-items: stretch;
   }
 
-  .tabs.tab23 .tabs-list .tabs-tab {
-    margin: 0 0 18px;
+  .tabs.tab23 .tabs-list {
+    flex-direction: column;
+    gap: 16px;
+    height: auto;
+    min-height: 0;
+    align-items: stretch;
+  }
+
+  .tabs.tab23 .tabs-tab {
     min-width: 0;
     width: 100%;
     justify-content: flex-start;
   }
 
-  .tabs.tab23 .tabs-list .tabs-tab::before {
+  .tabs.tab23 .tabs-tab::after {
     left: 36px;
     transform: none;
   }
-}
-
-.tabs.tab23 .tabs-panel {
-  border: none;
-  box-shadow: none;
-  margin: 0;
-  padding: 24px 0 0;
-  background: transparent;
 }

@@ -1,6 +1,4 @@
-/* Fixed CSS Code */
-
-/* Disable no-descending-specificity validation globally */
+/* Disable the no-descending-specificity rule to resolve specificity order issues */
 /* stylelint-disable no-descending-specificity */
 
 .hero-container .hero-wrapper {
@@ -45,107 +43,9 @@
   height: 100%;
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .hero {
     padding: 40px 32px;
-  }
-}
-
-.hero.hero5 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 78px;
-  background: #fff;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.hero.hero5 > div:first-child {
-  display: none;
-}
-
-.hero.hero5 > div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  width: 100%;
-  min-width: 0;
-  padding: 0;
-  margin: 0;
-  gap: 0;
-}
-
-.hero.hero5 > div:nth-child(2) {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: center;
-  gap: 0;
-  min-width: 0;
-  flex: 1 1 auto;
-}
-
-.hero.hero5 h2 {
-  display: flex;
-  align-items: center;
-  font-family: Baloo, Comic Sans, Arial, sans-serif;
-  font-size: 2.5rem;
-  font-weight: 100;
-  color: #d36f18;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  position: relative;
-  white-space: nowrap;
-}
-
-.hero.hero5 h2::after {
-  content: "";
-  display: inline-block;
-  vertical-align: middle;
-  position: relative;
-  margin-left: 2px;
-  width: 110px;
-  height: 38px;
-  background: #22c55e;
-  border-radius: 999px;
-}
-
-.hero.hero5 h2::before {
-  content: "";
-  display: block;
-  position: absolute;
-  right: 108px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-left: 14px solid #22c55e;
-  border-top: 14px solid transparent;
-  border-bottom: 14px solid transparent;
-  z-index: 2;
-}
-
-@media (max-width: 900px) {
-  .hero.hero5 h2 {
-    font-size: 1.3rem;
-  }
-
-  .hero.hero5 h2::after {
-    width: 68px;
-    height: 28px;
-  }
-
-  .hero.hero5 h2::before {
-    right: 66px;
-    border-left-width: 10px;
-    border-top-width: 10px;
-    border-bottom-width: 10px;
   }
 }
 
@@ -193,7 +93,7 @@
   display: none;
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .hero.hero6 {
     aspect-ratio: 1.2 / 1;
     max-height: 400px;
@@ -295,7 +195,7 @@
   border-bottom: 0;
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .hero.hero7 {
     padding: 14px 0 2px;
     min-height: 0;
@@ -332,5 +232,91 @@
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     border-top: 6px solid #0bb585;
+  }
+}
+
+
+.hero.hero5 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #fff;
+  padding: 0;
+  min-height: 48px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hero.hero5 > div:first-child {
+  display: none;
+}
+
+.hero.hero5 > div:last-child {
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.hero.hero5 h2 {
+  display: flex;
+  align-items: center;
+  font-family: Nunito, 'Comic Sans MS', Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #d16b21;
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  background: transparent;
+  width: 100%;
+  position: relative;
+
+  /* Padding for right rounded badge end */
+  padding-right: 0.7em;
+
+  /* Adjust the gradient stops for a left margin before the green and a right margin after the word */
+  background: linear-gradient(
+    to right,
+    transparent 0 70%,
+    #00b388 72% 96%,
+    transparent 96% 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 0 1.5em 1.5em 0 / 0 50% 50% 0;
+
+  /* Overlay a faded edge using a mask-image for more advanced browsers */
+  mask-image: linear-gradient(
+    to right,
+    black 0 69%,
+    black 71%,
+    transparent 70.9%,
+    black 72% 100%
+  );
+}
+
+@media (width <= 600px) {
+  .hero.hero5 h2 {
+    font-size: 1.2rem;
+    padding-right: 0.4em;
+    background: linear-gradient(
+      to right,
+      transparent 0 77%,
+      #00b388 79% 99%,
+      transparent 99% 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      black 0 75%,
+      black 77%,
+      transparent 76.9%,
+      black 79% 100%
+    );
   }
 }

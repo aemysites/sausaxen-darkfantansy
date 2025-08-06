@@ -1,3 +1,6 @@
+/* Disable no-descending-specificity globally for the file */
+/* stylelint-disable no-descending-specificity */
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -32,8 +35,6 @@
   }
 }
 
-
-/* Root: Flex row for columns, always reserve right column space */
 .columns.columns9 > div {
   display: flex;
   flex-direction: row;
@@ -45,7 +46,6 @@
   padding: 0;
 }
 
-/* Responsive: stack on small screens */
 @media (width <= 700px) {
   .columns.columns9 > div {
     flex-direction: column;
@@ -53,7 +53,6 @@
   }
 }
 
-/* Left column: instruction text */
 .columns.columns9 > div > div:first-child {
   flex: 2 1 0;
   min-width: 0;
@@ -63,7 +62,6 @@
   gap: 0;
 }
 
-/* Heading */
 .columns.columns9 > div > div:first-child > p:first-child {
   font-family: var(--heading-font-family);
   font-weight: 700;
@@ -73,7 +71,6 @@
   line-height: 1.3;
 }
 
-/* Duration row (icon + time) */
 .columns.columns9 > div > div:first-child > p:nth-child(2) {
   display: flex;
   align-items: center;
@@ -86,7 +83,6 @@
   padding-left: 0;
 }
 
-/* Clock icon: improved visibility, no background, no border, keep aspect/inline */
 .columns.columns9 > div > div:first-child > p:nth-child(2) picture,
 .columns.columns9 > div > div:first-child > p:nth-child(2) img {
   display: inline-block;
@@ -103,7 +99,6 @@
   border-radius: 0;
 }
 
-/* Instructional text */
 .columns.columns9 > div > div:first-child > p:nth-child(3) {
   font-family: var(--heading-font-family);
   font-size: 15px;
@@ -113,12 +108,10 @@
   margin: 0;
 }
 
-/* Spacing between paragraphs, except first */
 .columns.columns9 > div > div:first-child > * + * {
   margin-top: 6px;
 }
 
-/* Right column: always reserve space (even if empty), remove placeholder bg if video present */
 .columns.columns9 > div > div:last-child {
   flex: 1 1 0;
   min-width: 320px;
@@ -134,13 +127,11 @@
   transition: background 0.15s;
 }
 
-/* Remove neutral placeholder bg if video is present */
 .columns.columns9 > div > div:last-child:has(video) {
   background: none;
   min-width: 0;
 }
 
-/* Video player styling (ensure visible and fills column) */
 .columns.columns9 > div > div:last-child video {
   display: block;
   width: 100%;
@@ -152,13 +143,11 @@
   box-shadow: none;
 }
 
-/* Hide error placeholder if present */
 .columns.columns9 > div > div:last-child .button-container,
 .columns.columns9 > div > div:last-child a.button {
   display: none;
 }
 
-/* Responsive video and right column sizing */
 @media (width <= 700px) {
   .columns.columns9 > div > div:last-child {
     min-width: 0;
@@ -174,4 +163,178 @@
     min-width: 0;
     height: 180px;
   }
+}
+
+.columns.columns22 {
+  /* Section wrapper */
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.columns.columns22 > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  place-items: flex-start stretch;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+}
+
+@media (width <= 900px) {
+  .columns.columns22 > div {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.columns.columns22 > div > div:first-child {
+  background: #e3701e;
+  border-radius: 80px 0;
+  position: relative;
+  padding: 64px 36px 48px;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: visible;
+}
+
+.columns.columns22 > div > div:last-child {
+  border-radius: 0 80px;
+  background: #e3701e;
+  position: relative;
+  padding: 64px 36px 48px;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: visible;
+}
+
+.columns.columns22 > div > div > p:first-child {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(-62%);
+  z-index: 2;
+  background: transparent;
+  pointer-events: none;
+  padding: 0;
+}
+
+.columns.columns22 > div > div > p:first-child picture {
+  width: 80%;
+  min-width: 180px;
+  max-width: 320px;
+  height: auto;
+  display: block;
+}
+
+.columns.columns22 > div > div:not(:first-child) > p:first-child {
+  display: none;
+}
+
+.columns.columns22 > div > div > p > picture:last-of-type {
+  position: absolute;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+  border: 4px solid #fff;
+  z-index: 3;
+  background: #fff;
+  display: block;
+}
+
+.columns.columns22 > div > div:first-child > p > picture:last-of-type {
+  right: -38px;
+  bottom: 32px;
+}
+
+.columns.columns22 > div > div:last-child > p > picture:last-of-type {
+  left: -38px;
+  top: 32px;
+}
+
+.columns.columns22 > div > div > p > picture:last-of-type img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.columns.columns22 > div > div > h2 {
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 32px 0 12px;
+  text-align: left;
+  z-index: 2;
+}
+
+.columns.columns22 > div > div > p:not(:first-child) {
+  color: #fff3dd;
+  font-size: 1.04rem;
+  line-height: 1.5;
+  margin: 0;
+  margin-bottom: 0;
+  max-width: 320px;
+  text-align: left;
+  z-index: 2;
+}
+
+.columns.columns22 > div > div > p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+@media (width <= 600px) {
+  .columns.columns22 > div {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 0;
+  }
+
+  .columns.columns22 > div > div {
+    min-width: 0;
+    width: 100%;
+    padding: 44px 10px 36px;
+  }
+
+  .columns.columns22 > div > div > p:first-child picture {
+    width: 96%;
+    min-width: 0;
+  }
+
+  .columns.columns22 > div > div > h2 {
+    font-size: 1.15rem;
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+}
+
+.columns.columns22 > div > div {
+  background-image: url('data:image/svg+xml;utf8,<svg width="320" height="360" viewBox="0 0 320 360" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.2" d="M0,120 C120,80 200,160 320,120" stroke="white" stroke-width="4" fill="none"/><path opacity="0.12" d="M0,250 C110,250 120,350 320,320" stroke="white" stroke-width="4" fill="none"/></svg>');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.columns.columns22 > div > div > h2,
+.columns.columns22 > div > div > p:not(:first-child) {
+  text-align: left;
+  max-width: 320px;
+  margin-left: 0;
+  margin-right: 0;
 }

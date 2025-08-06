@@ -1,6 +1,3 @@
-/* Disabled no-descending-specificity globally for the file */
-/* stylelint-disable no-descending-specificity */
-
 .accordion details {
   border: 1px solid #dadada;
 }
@@ -71,8 +68,6 @@
   box-shadow: none;
   position: relative;
 }
-
-/* Remove all borders and margin between accordion items */
 .accordion .accordion-item,
 .accordion details {
   border: none;
@@ -107,15 +102,11 @@
 .accordion details:last-child summary {
   border-bottom: none;
 }
-
-/* Remove highlight on hover/open */
 .accordion details summary:focus,
 .accordion details summary:hover,
 .accordion details[open] summary {
   background: transparent;
 }
-
-/* Question text: remove extra margin, inherit font */
 .accordion details summary p {
   margin: 0;
   font-family: inherit;
@@ -125,8 +116,6 @@
   line-height: inherit;
   letter-spacing: 0.025em;
 }
-
-/* Chevron arrow: taller, heavier, perfectly centered */
 .accordion details summary::after {
   display: inline-block;
   width: 22px;
@@ -141,8 +130,6 @@
 .accordion details[open] summary::after {
   transform: rotate(180deg);
 }
-
-/* Accordion answer/body */
 .accordion .accordion-item-body {
   padding: 14px 0 18px;
   background: transparent;
@@ -153,14 +140,10 @@
   line-height: 1.6;
   letter-spacing: 0.012em;
 }
-
-/* Ensure no border or background on open state */
 .accordion details[open] .accordion-item-body {
   background: transparent;
   border: none;
 }
-
-/* Responsive: adapt font and spacing for small screens */
 @media (width <= 600px) {
   .accordion {
     max-width: 100vw;
@@ -182,5 +165,133 @@
     width: 16px;
     height: 18px;
     margin-left: 8px;
+  }
+}
+
+
+.accordion {
+  max-width: 900px;
+  margin: 70px auto 60px auto;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.04);
+  padding: 3rem 0 3rem 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+/* Remove default details marker for cross-browser consistency */
+.accordion details summary::-webkit-details-marker,
+.accordion details summary::marker {
+  display: none;
+}
+
+/* FAQ row styling, more compact and in line with original */
+.accordion details summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  font-family: Fredoka, var(--body-font-family), Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.19rem;
+  color: #222;
+  background: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #E0E0E0;
+  cursor: pointer;
+  padding: 1.1rem 3rem 1.1rem 3rem;
+  letter-spacing: 0.01em;
+  line-height: 1.21;
+  box-sizing: border-box;
+  transition: background 0.2s;
+}
+
+.accordion details:last-child summary {
+  border-bottom: none;
+}
+
+.accordion details + details {
+  margin-top: 0;
+}
+
+.accordion details summary p {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+
+/* Accordion answer styling, more compact */
+.accordion .accordion-item-body {
+  font-family: var(--body-font-family);
+  font-size: 1.07rem;
+  color: #444;
+  padding: 0.75rem 3rem 1.1rem 3rem;
+  background: transparent;
+  border: none;
+  line-height: 1.6;
+  letter-spacing: 0.008em;
+}
+
+/* Remove background and border on open for summary/answer */
+.accordion details[open] summary,
+.accordion details[open] .accordion-item-body {
+  background: transparent;
+  border: none;
+}
+
+/* Chevron/arrow icon refinement */
+.accordion details summary::after {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  margin-left: 10px;
+  background-size: 14px 14px;
+  background-repeat: no-repeat;
+  background-position: center;
+  align-self: center;
+  transition: transform 0.22s cubic-bezier(.4,0,.2,1);
+}
+
+@media (max-width: 900px) {
+  .accordion {
+    max-width: 100vw;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 1.2rem 0 1.2rem 0;
+  }
+
+  .accordion details summary,
+  .accordion .accordion-item-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .accordion details summary {
+    min-height: 42px;
+    font-size: 1rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+  .accordion .accordion-item-body {
+    font-size: 0.92rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.7rem;
+  }
+  .accordion details summary::after {
+    width: 11px;
+    height: 11px;
+    min-width: 11px;
+    min-height: 11px;
+    margin-left: 5px;
+    background-size: 11px 11px;
   }
 }

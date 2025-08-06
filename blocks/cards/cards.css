@@ -1241,7 +1241,6 @@
 
 .cards.cards24 {
   background-color: #fff;
-  /* This is a sample SVG divider as a data URI. Replace with your real illustrated divider asset as needed. */
   background-image: url('data:image/svg+xml;utf8,<svg width="400" height="40" xmlns="http://www.w3.org/2000/svg"><g><ellipse cx="20" cy="20" rx="10" ry="17" fill="%23f69b43"/><ellipse cx="60" cy="20" rx="16" ry="12" fill="%23ffe7a1"/><ellipse cx="100" cy="20" rx="12" ry="12" fill="%2330b67b"/><ellipse cx="140" cy="20" rx="10" ry="17" fill="%23f69b43"/><ellipse cx="180" cy="20" rx="16" ry="12" fill="%23ffe7a1"/><ellipse cx="220" cy="20" rx="12" ry="12" fill="%2330b67b"/><ellipse cx="260" cy="20" rx="10" ry="17" fill="%23f69b43"/><ellipse cx="300" cy="20" rx="16" ry="12" fill="%23ffe7a1"/><ellipse cx="340" cy="20" rx="12" ry="12" fill="%2330b67b"/><ellipse cx="380" cy="20" rx="10" ry="17" fill="%23f69b43"/></g></svg>');
   background-repeat: repeat-x;
   background-position: top center;
@@ -1258,8 +1257,6 @@
   align-items: flex-start;
   overflow: hidden;
 }
-
-/* Remove grid/flex from ul, hide any stray content */
 .cards.cards24 > ul {
   margin: 0;
   padding: 0;
@@ -1268,4 +1265,151 @@
   width: 100%;
   height: 0;
   overflow: hidden;
+}
+
+
+.cards.cards28 {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cards.cards28 ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 6px; /* tighter vertical and horizontal gaps */
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 100%;
+}
+
+/* Card container: minimal vertical space, compact */
+.cards.cards28 ul > li {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch; /* ensure image and body fill height */
+  background: #fff;
+  border-radius: 10px;
+  border: 2px solid #F08B32;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+
+/* Card border color: teal for 2nd, orange for rest */
+.cards.cards28 ul > li:nth-child(2) { border-color: #2F8F8D; }
+.cards.cards28 ul > li:not(:nth-child(2)) { border-color: #F08B32; }
+
+/* Image: fill card height, no vertical margin, tight corners */
+.cards.cards28 .cards-card-image {
+  flex: 0 0 74px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: #f6f6f6;
+  border-radius: 10px 0 0 10px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  width: 74px;
+  height: 100%;
+}
+
+.cards.cards28 .cards-card-image picture,
+.cards.cards28 .cards-card-image img {
+  width: 74px;
+  height: 100%;
+  min-height: 56px;
+  object-fit: cover;
+  border-radius: 10px 0 0 10px;
+  display: block;
+  margin: 0;
+}
+
+/* Body: tight, vertically centered, little padding */
+.cards.cards28 .cards-card-body {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6px 12px 6px 13px;
+  margin: 0;
+  min-width: 0;
+  box-sizing: border-box;
+  font-family: var(--heading-font-family), Arial, sans-serif;
+}
+
+.cards.cards28 .cards-card-body p {
+  margin: 0;
+  font-family: var(--heading-font-family), Arial, sans-serif;
+  font-size: 1.01rem;
+  color: #333;
+  line-height: 1.19;
+  font-weight: 400;
+  word-break: break-word;
+  padding: 0;
+}
+
+.cards.cards28 .cards-card-body strong {
+  display: block;
+  font-size: 1.11rem;
+  font-weight: 800;
+  margin-bottom: 0;
+  line-height: 1.13;
+  padding: 0;
+}
+
+/* Heading color mapping: orange for 1,3,4; teal for 2 */
+.cards.cards28 ul > li:nth-child(1) .cards-card-body strong,
+.cards.cards28 ul > li:nth-child(3) .cards-card-body strong,
+.cards.cards28 ul > li:nth-child(4) .cards-card-body strong {
+  color: #F08B32;
+}
+.cards.cards28 ul > li:nth-child(2) .cards-card-body strong {
+  color: #2F8F8D;
+}
+
+/* Remove extra vertical space */
+.cards.cards28 .cards-card-image,
+.cards.cards28 .cards-card-body,
+.cards.cards28 .cards-card-body p,
+.cards.cards28 .cards-card-body strong {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Responsive: stack vertically, shrink image/text for small screens */
+@media (max-width: 700px) {
+  .cards.cards28 {
+    max-width: 100vw;
+  }
+  .cards.cards28 ul {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+  .cards.cards28 .cards-card-image {
+    flex: 0 0 48px;
+    width: 48px;
+  }
+  .cards.cards28 .cards-card-image picture,
+  .cards.cards28 .cards-card-image img {
+    width: 48px;
+    min-height: 38px;
+  }
+  .cards.cards28 .cards-card-body {
+    padding: 5px 7px 5px 8px;
+  }
+  .cards.cards28 .cards-card-body p {
+    font-size: 0.97rem;
+  }
+  .cards.cards28 .cards-card-body strong {
+    font-size: 1.01rem;
+  }
 }

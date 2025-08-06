@@ -85,11 +85,10 @@
   flex: 1 1 auto;
 }
 
-/* Headline styling */
 .hero.hero5 h2 {
   display: flex;
   align-items: center;
-  font-family: Baloo, Comic Sans, Arial, sans-serif;
+  font-family: Baloo, "Comic Sans", Arial, sans-serif;
   font-size: 2.5rem;
   font-weight: 100;
   color: #d36f18;
@@ -103,20 +102,18 @@
   white-space: nowrap;
 }
 
-/* Simulated badge group: wrapper for badge + triangle as sibling "fake badge group" */
 .hero.hero5 h2::after {
   content: "";
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  margin-left: 2px; /* Tighter gap to headline */
+  margin-left: 2px;
   width: 110px;
   height: 38px;
   background: #22c55e;
   border-radius: 999px;
 }
 
-/* Simulated badge triangle, absolutely stuck to left of badge */
 .hero.hero5 h2::before {
   content: "";
   display: block;
@@ -132,7 +129,6 @@
   z-index: 2;
 }
 
-/* Responsive adjustments */
 @media (width <= 900px) {
   .hero.hero5 h2 {
     font-size: 1.3rem;
@@ -148,5 +144,59 @@
     border-left-width: 10px;
     border-top-width: 10px;
     border-bottom-width: 10px;
+  }
+}
+
+.hero.hero6 {
+  width: 100vw;
+  max-width: 100vw;
+  aspect-ratio: 2.6 / 1;
+  min-height: 220px;
+  max-height: 460px;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+/* Make the top-level immediate children fill the hero area */
+.hero.hero6 > div {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Make the image fill the hero area exactly */
+.hero.hero6 picture,
+.hero.hero6 img {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove empty column if present */
+.hero.hero6 > div:last-child {
+  display: none;
+}
+
+@media (width <= 900px) {
+  .hero.hero6 {
+    aspect-ratio: 1.2 / 1;
+    max-height: 400px;
   }
 }

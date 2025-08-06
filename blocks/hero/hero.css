@@ -1,4 +1,4 @@
-/* Disable no-descending-specificity globally */
+/* Disable no-descending-specificity as suggested */
 /* stylelint-disable no-descending-specificity */
 
 .hero-container .hero-wrapper {
@@ -49,142 +49,6 @@
   }
 }
 
-.hero.hero7 {
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
-  padding: 28px 0 12px;
-  background: none;
-  min-height: 0;
-  display: block;
-}
-
-.hero.hero7 > div {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  min-height: 0;
-}
-
-.hero.hero7 > div > div:first-child {
-  display: none;
-}
-
-.hero.hero7 > div > div:last-child {
-  flex: 1 1 0%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin: 0;
-  padding: 0;
-  min-width: 0;
-  min-height: 0;
-}
-
-.hero.hero7 h1 {
-  font-family: Righteous, cursive, sans-serif;
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: #e5751f;
-  letter-spacing: 0.01em;
-  margin: 0;
-  padding: 0;
-  line-height: 1.14;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  text-align: left;
-  background: none;
-  width: 100%;
-  min-height: 48px;
-  justify-content: flex-start;
-  margin-left: 0;
-}
-
-.hero.hero7 h1,
-.hero.hero7 h1 *:not(strong) {
-  color: #e5751f;
-}
-
-.hero.hero7 h1 strong {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #0bb585;
-  color: #fff;
-  font-family: Righteous, cursive, sans-serif;
-  font-weight: 700;
-  font-size: 1.13em;
-  border-radius: 2em;
-  padding: 0.14em 1.17em 0.14em 1.05em;
-  margin: 0 0.26em 0 0.18em;
-  position: relative;
-  min-width: 94px;
-  min-height: 34px;
-  line-height: 1.18;
-  box-sizing: border-box;
-  vertical-align: middle;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 7%);
-}
-
-.hero.hero7 h1 strong::after {
-  display: block;
-  position: absolute;
-  left: 38%;
-  bottom: -12px;
-  width: 0;
-  height: 0;
-  border-left: 13px solid transparent;
-  border-right: 13px solid transparent;
-  border-top: 11px solid #0bb585;
-  border-bottom: 0;
-}
-
-@media (width <= 600px) {
-  .hero.hero7 {
-    padding: 14px 0 2px;
-    min-height: 0;
-  }
-
-  .hero.hero7 h1 {
-    font-size: 1.08rem;
-    flex-wrap: wrap;
-    letter-spacing: 0;
-    word-wrap: break-word;
-    min-height: 30px;
-  }
-
-  .hero.hero7 > div {
-    flex-direction: column;
-    align-items: stretch;
-    min-height: 32px;
-  }
-
-  .hero.hero7 > div > div:last-child {
-    justify-content: flex-start;
-  }
-
-  .hero.hero7 h1 strong {
-    min-width: 56px;
-    min-height: 20px;
-    font-size: 1em;
-    padding: 0.08em 0.6em 0.08em 0.5em;
-  }
-
-  .hero.hero7 h1 strong::after {
-    left: 25%;
-    bottom: -7px;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 6px solid #0bb585;
-  }
-}
-
-
 .hero.hero5 {
   display: flex;
   flex-direction: row;
@@ -213,7 +77,7 @@
 .hero.hero5 h2 {
   display: flex;
   align-items: center;
-  font-family: Nunito, 'Comic Sans MS', Arial, sans-serif;
+  font-family: Nunito, Comic Sans MS, Arial, sans-serif;
   font-size: 2rem;
   font-weight: 800;
   color: #d16b21;
@@ -263,7 +127,6 @@
   }
 }
 
-
 .hero.hero6 {
   position: relative;
   width: 100vw;
@@ -276,11 +139,8 @@
   overflow: hidden;
   box-sizing: border-box;
   display: block;
-
-  /* Ensures no unwanted gap above the image/bar */
 }
 
-/* Absolutely position the image background to the top of the hero */
 .hero.hero6 > div:first-child {
   position: absolute;
   inset: 0;
@@ -292,7 +152,6 @@
   padding: 0;
 }
 
-/* Ensure image fills area and matches crop of the original */
 .hero.hero6 picture,
 .hero.hero6 img {
   width: 100%;
@@ -304,7 +163,6 @@
   padding: 0;
 }
 
-/* Navigation bar overlay styling, overlays directly atop the image */
 .hero.hero6 > div:last-child {
   display: flex;
   flex-direction: row;
@@ -323,7 +181,6 @@
   margin: 0;
 }
 
-/* Responsive: thinner hero for smaller screens */
 @media (width <= 900px) {
   .hero.hero6 {
     height: 100px;
@@ -335,8 +192,130 @@
   }
 }
 
-/* Allow the hero to span the full page width */
 .hero-container > .hero-wrapper {
   max-width: unset;
   padding: 0;
+}
+
+.hero.hero7 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 78px;
+  height: 78px;
+  padding: 0;
+  background: none;
+  box-sizing: border-box;
+}
+
+.hero.hero7 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.hero.hero7 > div > div:first-child:empty {
+  display: none;
+}
+
+.hero.hero7 > div > div:last-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+}
+
+.hero.hero7 h1 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row nowrap;
+  text-align: center;
+  font-family: Fredoka One, Baloo, Arial, sans-serif;
+  font-size: 32px;
+  font-weight: 100;
+  color: #e67c1c;
+  letter-spacing: 0.01em;
+  margin: 0 auto;
+  padding: 0;
+  line-height: 1.14;
+  background: none;
+  width: auto;
+  min-width: 0;
+  min-height: 48px;
+  white-space: nowrap;
+}
+
+.hero.hero7 h1,
+.hero.hero7 h1 *:not(strong) {
+  color: #e67c1c;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.hero.hero7 h1 strong {
+  display: inline-block;
+  border-radius: 18px;
+  padding: 4px 18px;
+  background: #26a65b;
+  color: #fff;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1em;
+  position: relative;
+  margin: 0 0.06em;
+  vertical-align: middle;
+  box-shadow: none;
+  min-width: unset;
+  min-height: unset;
+  line-height: 1.2;
+}
+
+.hero.hero7 h1 strong::after {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -6px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #26a65b;
+}
+
+@media (width <= 700px) {
+  .hero.hero7 {
+    min-height: 56px;
+    height: auto;
+    padding: 8px 0;
+  }
+
+  .hero.hero7 h1 {
+    font-size: 1.1rem;
+    min-height: 32px;
+    white-space: normal;
+    flex-wrap: wrap;
+  }
+
+  .hero.hero7 h1 strong {
+    padding: 2px 9px;
+    font-size: 1em;
+    border-radius: 12px;
+  }
+
+  .hero.hero7 h1 strong::after {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #26a65b;
+    bottom: -4px;
+  }
 }

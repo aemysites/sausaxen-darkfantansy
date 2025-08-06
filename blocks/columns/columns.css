@@ -1,6 +1,6 @@
-/* Disable no-descending-specificity globally for the file */
-/* stylelint-disable no-descending-specificity */
+/* Linted and Fixed CSS */
 
+/* --- GENERAL STYLES --- */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -22,16 +22,17 @@
   display: block;
 }
 
-@media (width >= 900px) {
+/* Fixed media query syntax */
+@media (min-width: 900px) {
   .columns > div {
     align-items: center;
-    flex-direction: unset;
+    flex-direction: initial;
     gap: 24px;
   }
 
   .columns > div > div {
     flex: 1;
-    order: unset;
+    order: initial;
   }
 }
 
@@ -46,7 +47,7 @@
   padding: 0;
 }
 
-@media (width <= 700px) {
+@media (max-width: 700px) {
   .columns.columns9 > div {
     flex-direction: column;
     gap: 20px;
@@ -94,7 +95,7 @@
   background: none;
   border: none;
   box-shadow: none;
-  filter: grayscale(100%) brightness(0.2) contrast(2);
+  filter: grayscale(100%) brightness(20%) contrast(200%);
   opacity: 1;
   border-radius: 0;
 }
@@ -148,7 +149,7 @@
   display: none;
 }
 
-@media (width <= 700px) {
+@media (max-width: 700px) {
   .columns.columns9 > div > div:last-child {
     min-width: 0;
     max-width: 100%;
@@ -166,105 +167,143 @@
 }
 
 .columns.columns22 {
-  /* Section wrapper */
   width: 100%;
   margin: 0 auto;
   padding: 0;
+  box-sizing: border-box;
+  position: relative;
 }
 
+/* --- FLEX LAYOUT: Cards side by side --- */
 .columns.columns22 > div {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
   gap: 48px;
-  place-items: flex-start stretch;
   width: 100%;
   margin: 0 auto;
   padding: 0;
   position: relative;
+  min-height: 480px;
 }
 
-@media (width <= 900px) {
+/* Stack on smaller screens */
+@media (max-width: 900px) {
   .columns.columns22 > div {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 32px;
+    min-height: 0;
   }
 }
 
-.columns.columns22 > div > div:first-child {
-  background: #e3701e;
-  border-radius: 80px 0;
+/* --- CARDS --- */
+.columns.columns22 > div > div {
+  background: #f89d4e;
   position: relative;
-  padding: 64px 36px 48px;
-  box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
-  min-height: 360px;
+  overflow: visible;
+  min-height: 480px;
+  flex: 1 1 0;
+  max-width: 640px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow: visible;
+
+  /* large side paddings, less top so content can show */
+  padding: 64px 44px;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 6%);
+  background-image: url('wavy-lines.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.columns.columns22 > div > div:first-child {
+  border-radius: 0 56px;
 }
 
 .columns.columns22 > div > div:last-child {
-  border-radius: 0 80px;
-  background: #e3701e;
-  position: relative;
-  padding: 64px 36px 48px;
-  box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
-  min-height: 360px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  overflow: visible;
+  border-radius: 56px 0;
 }
 
-.columns.columns22 > div > div > p:first-child {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  transform: translateY(-62%);
-  z-index: 2;
-  background: transparent;
-  pointer-events: none;
-  padding: 0;
-}
-
-.columns.columns22 > div > div > p:first-child picture {
-  width: 80%;
-  min-width: 180px;
-  max-width: 320px;
-  height: auto;
+/* --- ICON ROW (food strip): Only in first (left) card, visually span across --- */
+.columns.columns22 > div > div:first-child > p:first-child picture:first-of-type {
   display: block;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%) translateY(-80%);
+  width: 340px;
+  height: 56px;
+  z-index: 5;
+  pointer-events: none;
 }
 
-.columns.columns22 > div > div:not(:first-child) > p:first-child {
+.columns.columns22 > div > div:not(:first-child) > p:first-child picture:first-of-type {
   display: none;
 }
 
-.columns.columns22 > div > div > p > picture:last-of-type {
-  position: absolute;
-  width: 86px;
-  height: 86px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
-  border: 4px solid #fff;
-  z-index: 3;
-  background: #fff;
+/* --- HEADING AND TEXT --- */
+.columns.columns22 > div > div > h2 {
+  color: #fff;
+  font-family: var(--body-font-family);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 18px;
+  line-height: 1.1;
+  z-index: 1;
+  text-align: left;
+  position: relative;
+}
+
+.columns.columns22 > div > div > p:not(:first-child) {
+  color: #fff3dd;
+  font-family: var(--heading-font-family);
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  margin: 0 0 1.2em;
+  max-width: 440px;
+  z-index: 1;
+  text-align: left;
+  background: none;
+  position: relative;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.columns.columns22 > div > div > p:first-child {
+  margin: 0;
+  padding: 0;
+  position: static;
+  width: 100%;
   display: block;
 }
 
+/* --- CIRCULAR FOOD IMAGE: Large, overlapping corner OUTSIDE card, never over text --- */
+.columns.columns22 > div > div > p > picture:last-of-type {
+  position: absolute;
+  width: 124px;
+  height: 124px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 13%);
+  border: 6px solid #fff;
+  background: #fff;
+  z-index: 4;
+  display: block;
+  pointer-events: none;
+}
+
+/* Position circles further out */
 .columns.columns22 > div > div:first-child > p > picture:last-of-type {
-  right: -38px;
-  bottom: 32px;
+  right: -44px;
+  bottom: -44px;
 }
 
 .columns.columns22 > div > div:last-child > p > picture:last-of-type {
-  left: -38px;
-  top: 32px;
+  left: -44px;
+  top: -44px;
 }
 
 .columns.columns22 > div > div > p > picture:last-of-type img {
@@ -274,67 +313,65 @@
   border-radius: 50%;
 }
 
-.columns.columns22 > div > div > h2 {
-  color: #fff;
-  font-family: var(--heading-font-family);
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 32px 0 12px;
-  text-align: left;
-  z-index: 2;
-}
-
+/* --- Prevent card text from running under images --- */
+.columns.columns22 > div > div > h2,
 .columns.columns22 > div > div > p:not(:first-child) {
-  color: #fff3dd;
-  font-size: 1.04rem;
-  line-height: 1.5;
-  margin: 0;
-  margin-bottom: 0;
-  max-width: 320px;
-  text-align: left;
-  z-index: 2;
+  position: relative;
+  z-index: 10;
 }
 
-.columns.columns22 > div > div > p {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-}
-
-@media (width <= 600px) {
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 600px) {
   .columns.columns22 > div {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 24px;
-    padding: 0;
+    min-height: 0;
   }
 
   .columns.columns22 > div > div {
     min-width: 0;
     width: 100%;
-    padding: 44px 10px 36px;
-  }
-
-  .columns.columns22 > div > div > p:first-child picture {
-    width: 96%;
-    min-width: 0;
+    padding: 44px 10px 32px;
+    min-height: 320px;
+    max-width: none;
   }
 
   .columns.columns22 > div > div > h2 {
-    font-size: 1.15rem;
-    margin-top: 24px;
-    margin-bottom: 8px;
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+  }
+
+  .columns.columns22 > div > div > p:not(:first-child) {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .columns.columns22 > div > div > p > picture:last-of-type {
+    width: 64px;
+    height: 64px;
+    border-width: 4px;
+  }
+
+  .columns.columns22 > div > div:first-child > p:first-child picture:first-of-type {
+    width: 120px;
+    height: 22px;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%) translateY(-100%);
+  }
+
+  .columns.columns22 > div > div:first-child > p > picture:last-of-type {
+    right: -28px;
+    bottom: -28px;
+  }
+
+  .columns.columns22 > div > div:last-child > p > picture:last-of-type {
+    left: -28px;
+    top: -28px;
   }
 }
 
-.columns.columns22 > div > div {
-  background-image: url('data:image/svg+xml;utf8,<svg width="320" height="360" viewBox="0 0 320 360" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.2" d="M0,120 C120,80 200,160 320,120" stroke="white" stroke-width="4" fill="none"/><path opacity="0.12" d="M0,250 C110,250 120,350 320,320" stroke="white" stroke-width="4" fill="none"/></svg>');
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.columns.columns22 > div > div > h2,
-.columns.columns22 > div > div > p:not(:first-child) {
-  text-align: left;
-  max-width: 320px;
-  margin-left: 0;
-  margin-right: 0;
+/* prevent style leakage */
+.columns.columns22 * {
+  box-sizing: border-box;
 }

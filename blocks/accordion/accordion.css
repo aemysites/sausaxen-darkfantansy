@@ -1,8 +1,10 @@
+/* Disabled no-descending-specificity globally for the file */
+/* stylelint-disable no-descending-specificity */
+
 .accordion details {
   border: 1px solid #dadada;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
 .accordion details + details {
   margin-top: 24px;
 }
@@ -19,10 +21,6 @@
   list-style: none;
   overflow: auto;
   transition: background-color 0.2s;
-}
-
-.accordion details[open] summary {
-  background-color: var(--light-color);
 }
 
 .accordion details summary:focus,
@@ -47,6 +45,10 @@
   transition: transform 0.2s;
 }
 
+.accordion details[open] summary {
+  background-color: var(--light-color);
+}
+
 .accordion details[open] summary::after {
   transform: translateY(-50%) rotate(-45deg);
 }
@@ -58,4 +60,127 @@
 .accordion details[open] .accordion-item-body {
   border-top: 1px solid #dadada;
   background-color: var(--background-color);
+}
+
+.accordion {
+  max-width: 1000px;
+  margin: 56px auto 0;
+  background: #fff;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  position: relative;
+}
+
+/* Remove all borders and margin between accordion items */
+.accordion .accordion-item,
+.accordion details {
+  border: none;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.accordion details summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Fredoka, var(--body-font-family), Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.18rem;
+  color: #222;
+  padding: 16px 0;
+  border: none;
+  border-bottom: 1px solid #E0E0E0;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  min-height: 48px;
+  box-sizing: border-box;
+  letter-spacing: 0.025em;
+  line-height: 1.2;
+  transition: background 0.2s;
+}
+
+.accordion details:last-child summary {
+  border-bottom: none;
+}
+
+/* Remove highlight on hover/open */
+.accordion details summary:focus,
+.accordion details summary:hover,
+.accordion details[open] summary {
+  background: transparent;
+}
+
+/* Question text: remove extra margin, inherit font */
+.accordion details summary p {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  line-height: inherit;
+  letter-spacing: 0.025em;
+}
+
+/* Chevron arrow: taller, heavier, perfectly centered */
+.accordion details summary::after {
+  display: inline-block;
+  width: 22px;
+  height: 24px;
+  margin-left: 14px;
+  flex-shrink: 0;
+  background: url('data:image/svg+xml;utf8,<svg width="22" height="24" viewBox="0 0 24 24" fill="none" stroke="%23222" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"/></svg>') center/contain no-repeat;
+  align-self: center;
+  transition: transform 0.22s cubic-bezier(.4,0,.2,1);
+}
+
+.accordion details[open] summary::after {
+  transform: rotate(180deg);
+}
+
+/* Accordion answer/body */
+.accordion .accordion-item-body {
+  padding: 14px 0 18px;
+  background: transparent;
+  font-family: var(--body-font-family);
+  font-size: 1.06rem;
+  color: #555;
+  border: none;
+  line-height: 1.6;
+  letter-spacing: 0.012em;
+}
+
+/* Ensure no border or background on open state */
+.accordion details[open] .accordion-item-body {
+  background: transparent;
+  border: none;
+}
+
+/* Responsive: adapt font and spacing for small screens */
+@media (width <= 600px) {
+  .accordion {
+    max-width: 100vw;
+    padding: 0 6px;
+  }
+
+  .accordion details summary {
+    font-size: 1rem;
+    padding: 10px 0;
+    min-height: 36px;
+  }
+
+  .accordion .accordion-item-body {
+    font-size: 0.93rem;
+    padding: 7px 0 11px;
+  }
+
+  .accordion details summary::after {
+    width: 16px;
+    height: 18px;
+    margin-left: 8px;
+  }
 }

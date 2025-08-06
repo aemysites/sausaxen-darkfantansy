@@ -1,4 +1,4 @@
-/* Disable no-descending-specificity rule globally */
+/* Disable the no-descending-specificity rule globally */
 /* stylelint-disable no-descending-specificity */
 
 .search .search-box {
@@ -145,73 +145,70 @@
   justify-content: flex-start;
   padding-top: 32px;
   padding-bottom: 40px;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+  background: #fff;
   min-width: 0;
 }
 
-/* Search bar container */
 .search > .search-box {
   display: flex;
   flex-direction: row;
   align-items: center;
   position: relative;
-  background: #e3f7f1;
-  border: 2px solid #b8e6d9;
+  background: #e7f8f1;
+  border: 1px solid #a0dac4;
   border-radius: 8px;
   width: 100%;
-  max-width: 730px;
-  height: 56px;
-  margin: 0 auto 32px;
+  max-width: 600px;
+  min-width: 260px;
+  height: 44px;
+  margin: 0 auto;
   box-sizing: border-box;
-  box-shadow: 0 2px 8px rgb(184 230 217 / 10%);
+  box-shadow: none;
+  padding-right: 0.5rem;
 }
 
-/* Input styling */
 .search > .search-box .search-input {
   flex: 1 1 0%;
   border: none;
   background: transparent;
   color: #222;
-  font-size: 20px;
-  font-family: Arial, Helvetica, Liberation Sans, sans-serif;
+  font-size: 1.06rem;
+  font-family: Arial, sans-serif;
   font-weight: 400;
-  font-style: normal;
   height: 100%;
-  padding: 0 48px 0 40px;
+  padding: 0 2.5rem 0 1.7rem;
   outline: none;
-  box-sizing: border-box;
   min-width: 0;
-
-  /* Vertically center placeholder/input text a bit more */
-  display: flex;
-  align-items: center;
+  letter-spacing: 0;
 }
 
 .search > .search-box .search-input::placeholder {
-  color: #b3c3c3;
+  color: #6b7280;
   opacity: 1;
-  font-size: 18px;
-  font-family: Arial, Helvetica, Liberation Sans, sans-serif;
+  font-size: 1.06rem;
+  font-family: Arial, sans-serif;
   font-weight: 400;
-  font-style: normal;
+  letter-spacing: 0;
 }
 
-/* Search icon */
 .search > .search-box .icon-search {
   position: absolute;
-  right: 18px;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   align-items: center;
-  width: 20px;
-  height: 20px;
-  opacity: 0.8;
+  width: 16px;
+  height: 16px;
+  opacity: 0.85;
   pointer-events: none;
 }
 
 .search > .search-box .icon-search img {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 .search-wrapper {
@@ -221,15 +218,25 @@
   width: 100%;
 }
 
-@media (width <= 850px) {
-  .search > .search-box,
-  .search ul.search-results {
-    max-width: 95vw;
-    width: 100%;
-  }
-
+/* Responsive: Adjust search bar and input sizing for small screens */
+@media (width <= 600px) {
   .search {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
     padding-left: 8px;
     padding-right: 8px;
+  }
+
+  .search > .search-box {
+    max-width: 98vw;
+    min-width: 0;
+    height: 40px;
+    padding-right: 0.25rem;
+  }
+
+  .search > .search-box .search-input {
+    font-size: 1rem;
+    padding-left: 1rem;
+    padding-right: 2rem;
   }
 }

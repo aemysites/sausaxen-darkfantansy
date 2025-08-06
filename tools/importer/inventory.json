@@ -2422,7 +2422,7 @@
   ],
   "blocks": [
     {
-      "name": "Columns",
+      "name": "new",
       "cluster": 1,
       "source": "Columns",
       "target": "Columns (columns1)",

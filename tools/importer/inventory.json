@@ -2422,11 +2422,11 @@
   ],
   "blocks": [
     {
-      "name": "Columns",
+      "name": "footer",
       "cluster": 1,
-      "source": "Columns",
-      "target": "Columns (columns1)",
-      "key": "columns1",
+      "source": "footer",
+      "target": "footer (footer1)",
+      "key": "footer1",
       "instances": [
         {
           "url": "https://foodiesonly.in/blogs/decadence-without-dairy-sweeten-your-day-the-vegan-way",
@@ -6483,11 +6483,11 @@
       ]
     },
     {
-      "name": "Columns",
+      "name": "Tabs",
       "cluster": 23,
-      "source": "Columns",
-      "target": "Columns (columns23)",
-      "key": "columns23",
+      "source": "Tabs",
+      "target": "Tabs (tab23)",
+      "key": "tab23",
       "instances": [
         {
           "url": "https://foodiesonly.in/blogs/decadence-without-dairy-sweeten-your-day-the-vegan-way",

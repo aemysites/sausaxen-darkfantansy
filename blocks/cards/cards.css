@@ -1,4 +1,6 @@
-/* Updated CSS Code */
+/* Disable no-descending-specificity rule globally */
+/* stylelint-disable no-descending-specificity */
+
 .cards > ul {
   list-style: none;
   margin: 0;
@@ -52,7 +54,6 @@
   margin: 0;
 }
 
-/* Card image section */
 .cards.cards2 .cards-card-image {
   position: relative;
   width: 100%;
@@ -68,7 +69,6 @@
   justify-content: flex-start;
 }
 
-/* Card image proper */
 .cards.cards2 .cards-card-image img,
 .cards.cards2 .cards-card-image picture {
   width: 100%;
@@ -79,7 +79,6 @@
   display: block;
 }
 
-/* Overlay circular icon at top right of image */
 .cards.cards2 .cards-card-image::after {
   position: absolute;
   top: 18px;
@@ -95,7 +94,6 @@
   content: "";
 }
 
-/* Overlay pill category label on image: workaround via negative translate */
 .cards.cards2 .cards-card-body p:first-child {
   position: absolute;
   left: 22px;
@@ -118,7 +116,6 @@
   transform: none;
 }
 
-/* Ensure .cards-card-body is positioned for absolute child */
 .cards.cards2 .cards-card-body {
   position: relative;
   flex: 1 1 auto;
@@ -133,7 +130,6 @@
   justify-content: flex-start;
 }
 
-/* Meta row: like (left) and date (right) - use flex row, directly under image */
 .cards.cards2 .cards-card-body .cards2-meta-row {
   display: flex;
   flex-direction: row;
@@ -164,7 +160,6 @@
   text-align: right;
 }
 
-/* Hide default stacked date/like, we'll visually move with .cards2-meta-row */
 .cards.cards2 .cards-card-body p:nth-child(2),
 .cards.cards2 .cards-card-body p:last-child {
   margin: 0;
@@ -176,7 +171,6 @@
   color: #888;
 }
 
-/* Headline/title paragraph (third) */
 .cards.cards2 .cards-card-body p:nth-child(3) {
   font-size: 1.13rem;
   font-family: var(--heading-font-family), sans-serif;
@@ -188,7 +182,6 @@
   overflow-wrap: break-word;
 }
 
-/* Remove default spacing between elements */
 .cards.cards2 .cards-card-body > * {
   margin-top: 0.2em;
   margin-bottom: 0.2em;
@@ -244,7 +237,119 @@
   }
 }
 
-/* Hide empty .cards-card-image (for broken/missing images) */
 .cards.cards2 .cards-card-image:empty {
   display: none;
+}
+
+.cards.cards10 ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  row-gap: 24px;
+}
+
+@media (width <= 900px) {
+  .cards.cards10 ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 600px) {
+  .cards.cards10 ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cards.cards10 ul > li {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgb(36 36 36 / 14%);
+  overflow: hidden;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  transition: box-shadow 0.2s;
+}
+
+/* Image Styling */
+.cards.cards10 .cards-card-image {
+  line-height: 0;
+}
+
+.cards.cards10 .cards-card-image img {
+  width: 100%;
+  height: 184px;
+  object-fit: cover;
+  display: block;
+  border-radius: 20px 20px 0 0;
+}
+
+/* Info Bar (the <p> directly under image) */
+.cards.cards10 .cards-card-body > p {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0;
+  padding: 0 14px;
+  font-size: 14px;
+  color: #4e4e4e;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  background: linear-gradient(
+    to right,
+    #f6e05e 0 63px,
+    #fff 63px 100%
+  );
+  min-height: 26px;
+  line-height: 1.16;
+  text-align: left;
+  border: none;
+  border-radius: 0;
+  position: relative;
+  z-index: 1;
+}
+
+@media (width <= 600px) {
+  .cards.cards10 .cards-card-body > p {
+    font-size: 13px;
+    padding: 0 8px;
+    min-height: 24px;
+    background: linear-gradient(
+      to right,
+      #f6e05e 0 48px,
+      #fff 48px 100%
+    );
+    gap: 10px;
+  }
+}
+
+/* Card Headline Styling */
+.cards.cards10 .cards-card-body h3 {
+  font-family: 'Baloo 2', 'Comic Neue', Quicksand, cursive, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  color: #181818;
+  letter-spacing: 0.01em;
+  margin: 16px 8px 0;
+  line-height: 1.28;
+}
+
+.cards.cards10 .cards-card-body {
+  padding: 0 0 16px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: flex-start;
+}
+
+.cards.cards10 ul > li:hover {
+  box-shadow: 0 8px 32px rgb(36 36 36 / 17%);
 }

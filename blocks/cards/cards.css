@@ -1362,8 +1362,6 @@
     height: auto;
   }
 }
-
-/* Image area */
 .cards.cards2 .cards-card-image {
   position: relative;
   width: 100%;
@@ -1392,15 +1390,11 @@
   display: block;
   background: transparent;
 }
-
-/* Move the label firmly inside the image's bottom left corner */
 .cards.cards2 .cards-card-body {
   position: relative;
   padding-top: 0;
   padding-bottom: 10px;
 }
-
-/* Anchor the label to the bottom of the image by using a negative translateY and a bottom offset */
 .cards.cards2 .cards-card-body p:first-child {
   position: absolute;
   left: 14px;
@@ -1422,8 +1416,6 @@
   font-family: var(--heading-font-family), sans-serif;
   letter-spacing: 0.03em;
 }
-
-/* Add enough top padding to card body to prevent label/date overlap and match original spacing */
 .cards.cards2 .cards-card-body > *:not(:first-child) {
   margin-bottom: 2px;
   margin-top: 0;
@@ -1431,8 +1423,6 @@
 .cards.cards2 .cards-card-body p:nth-child(2) {
   margin-top: 26px;
 }
-
-/* Date: small, light, close to title */
 .cards.cards2 .cards-card-body p:nth-child(2) {
   color: #b0b0b0;
   font-size: 13px;
@@ -1441,8 +1431,6 @@
   font-family: var(--body-font-family), sans-serif;
   margin-bottom: 2px;
 }
-
-/* Title: left, black, compact */
 .cards.cards2 .cards-card-body p:nth-child(3) {
   font-size: 1.04rem;
   font-weight: 700;
@@ -1453,8 +1441,6 @@
   overflow-wrap: break-word;
   font-family: var(--heading-font-family), sans-serif;
 }
-
-/* Like row: left, inline, prominent heart and number */
 .cards.cards2 .cards-card-body p:last-child {
   display: inline-flex;
   align-items: center;
@@ -1501,8 +1487,6 @@
     max-height: 120px;
   }
 }
-
-/* Optionally style an options icon if present in markup */
 .cards.cards2 .cards-card-image .icon,
 .cards.cards2 .cards-card-image svg,
 .cards.cards2 .cards-card-image i {
@@ -1521,4 +1505,161 @@
   justify-content: center;
   font-size: 18px;
   pointer-events: none;
+}
+
+
+.cards.cards8 > ul > li {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(60,60,60,0.08);
+  border: none;
+  overflow: hidden;
+  min-width: 0;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+/* Responsive multi-row grid */
+.cards.cards8 > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Card image area */
+.cards.cards8 .cards-card-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background: #f3f3f3;
+  display: block;
+}
+
+/* Card image itself */
+.cards.cards8 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+/* Absolutely position the label pill over the bottom of the image */
+.cards.cards8 > ul > li .cards-card-body p:first-of-type {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  background: #212121;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 2px 14px;
+  border-radius: 13px;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  z-index: 2;
+  letter-spacing: 0;
+  box-shadow: none;
+  border: none;
+  pointer-events: none;
+  min-width: 56px;
+  display: inline-block;
+}
+
+/* Move the label visually to overlap the image bottom edge */
+.cards.cards8 > ul > li .cards-card-image {
+  position: relative;
+}
+.cards.cards8 > ul > li .cards-card-body {
+  position: static;
+  padding-top: 0;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: var(--heading-font-family, 'Open Sans', Arial, sans-serif);
+  flex: 1 1 auto;
+}
+
+/* Actually place the label at the bottom edge of the image */
+.cards.cards8 > ul > li .cards-card-body p:first-of-type {
+  top: 100%;
+  transform: translate(-50%, -60%);
+}
+
+/* Remove any pseudo pill */
+.cards.cards8 .cards-card-image::after {
+  display: none;
+}
+
+/* Options icon (top-right), inset from card edge */
+.cards.cards8 > ul > li::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(60,60,60,0.08);
+  display: block;
+  z-index: 3;
+}
+
+/* Like/heart row: reserve space */
+.cards.cards8 .cards-card-body::before {
+  display: block;
+  width: 100%;
+  min-height: 22px;
+  margin: 0 0 4px 0;
+  content: "";
+}
+
+/* Card meta/date */
+.cards.cards8 .cards-card-body p:nth-of-type(2) {
+  color: #bdbdbd;
+  font-size: 13px;
+  margin: 12px 0 0 0;
+  text-align: center;
+  font-weight: 400;
+  background: none;
+  padding: 0;
+}
+
+/* Title styling */
+.cards.cards8 .cards-card-body h3 {
+  font-family: var(--heading-font-family, 'Open Sans', Arial, sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin: 4px 0 0 0;
+  line-height: 1.25;
+  text-align: center;
+  letter-spacing: normal;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .cards.cards8 > ul {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .cards.cards8 > ul > li {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

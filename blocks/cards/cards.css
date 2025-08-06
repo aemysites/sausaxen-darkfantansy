@@ -1,3 +1,4 @@
+/* Updated CSS Code */
 .cards > ul {
   list-style: none;
   margin: 0;
@@ -24,4 +25,226 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.cards.cards2 > ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  place-items: stretch center;
+}
+
+.cards.cards2 > ul > li {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgb(0 0 0 / 12%);
+  border: none;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 480px;
+  width: 320px;
+  position: relative;
+  margin: 0;
+}
+
+/* Card image section */
+.cards.cards2 .cards-card-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #eaeaea;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  overflow: hidden;
+  min-height: 200px;
+  max-height: 210px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Card image proper */
+.cards.cards2 .cards-card-image img,
+.cards.cards2 .cards-card-image picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: block;
+}
+
+/* Overlay circular icon at top right of image */
+.cards.cards2 .cards-card-image::after {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 9%);
+  display: block;
+  z-index: 2;
+  pointer-events: none;
+  content: "";
+}
+
+/* Overlay pill category label on image: workaround via negative translate */
+.cards.cards2 .cards-card-body p:first-child {
+  position: absolute;
+  left: 22px;
+  bottom: 22px;
+  background: #232323;
+  color: #fff;
+  border-radius: 16px;
+  padding: 4px 18px;
+  font-family: var(--heading-font-family), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  line-height: 1.2;
+  text-align: center;
+  margin: 0;
+  z-index: 4;
+  display: inline-block;
+  pointer-events: none;
+  transform: none;
+}
+
+/* Ensure .cards-card-body is positioned for absolute child */
+.cards.cards2 .cards-card-body {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 20px 24px;
+  font-family: var(--heading-font-family), sans-serif;
+  color: #000;
+  background: transparent;
+  min-height: 0;
+  justify-content: flex-start;
+}
+
+/* Meta row: like (left) and date (right) - use flex row, directly under image */
+.cards.cards2 .cards-card-body .cards2-meta-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  width: 100%;
+  font-size: 1rem;
+  position: absolute;
+  top: -30px;
+  left: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.cards.cards2 .cards-card-body .cards2-meta-row .cards2-like {
+  color: #151515;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.cards.cards2 .cards-card-body .cards2-meta-row .cards2-date {
+  color: #888;
+  font-weight: 400;
+  text-align: right;
+}
+
+/* Hide default stacked date/like, we'll visually move with .cards2-meta-row */
+.cards.cards2 .cards-card-body p:nth-child(2),
+.cards.cards2 .cards-card-body p:last-child {
+  margin: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  line-height: 1.2;
+  font-family: var(--heading-font-family), sans-serif;
+  color: #888;
+}
+
+/* Headline/title paragraph (third) */
+.cards.cards2 .cards-card-body p:nth-child(3) {
+  font-size: 1.13rem;
+  font-family: var(--heading-font-family), sans-serif;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+  margin: 10px 0 6px;
+  line-height: 1.36;
+  overflow-wrap: break-word;
+}
+
+/* Remove default spacing between elements */
+.cards.cards2 .cards-card-body > * {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+  line-height: normal;
+}
+
+@media (width <= 1050px) {
+  .cards.cards2 > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 700px;
+  }
+
+  .cards.cards2 > ul > li {
+    width: 98vw;
+    max-width: 360px;
+    height: 420px;
+  }
+
+  .cards.cards2 .cards-card-image {
+    min-height: 140px;
+    max-height: 160px;
+  }
+
+  .cards.cards2 .cards-card-body p:first-child {
+    bottom: 16px;
+    left: 16px;
+  }
+}
+
+@media (width <= 700px) {
+  .cards.cards2 > ul {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 98vw;
+  }
+
+  .cards.cards2 > ul > li {
+    width: 98vw;
+    min-width: 0;
+    max-width: 99vw;
+    height: auto;
+  }
+
+  .cards.cards2 .cards-card-image {
+    min-height: 100px;
+    max-height: 120px;
+  }
+
+  .cards.cards2 .cards-card-body p:first-child {
+    bottom: 12px;
+    left: 12px;
+  }
+}
+
+/* Hide empty .cards-card-image (for broken/missing images) */
+.cards.cards2 .cards-card-image:empty {
+  display: none;
 }

@@ -1,4 +1,4 @@
-/* Disable the no-descending-specificity rule to resolve specificity order issues */
+/* Disable no-descending-specificity globally */
 /* stylelint-disable no-descending-specificity */
 
 .hero-container .hero-wrapper {
@@ -46,57 +46,6 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
-  }
-}
-
-.hero.hero6 {
-  width: 100vw;
-  max-width: 100vw;
-  aspect-ratio: 2.6 / 1;
-  min-height: 220px;
-  max-height: 460px;
-  height: auto;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  overflow: hidden;
-  box-sizing: border-box;
-  display: flex;
-  align-items: stretch;
-  justify-content: stretch;
-}
-
-.hero.hero6 > div {
-  flex: 1 1 100%;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-.hero.hero6 picture,
-.hero.hero6 img {
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  object-fit: cover;
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-
-.hero.hero6 > div:last-child {
-  display: none;
-}
-
-@media (width <= 900px) {
-  .hero.hero6 {
-    aspect-ratio: 1.2 / 1;
-    max-height: 400px;
   }
 }
 
@@ -273,14 +222,9 @@
   line-height: 1.1;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  background: transparent;
   width: 100%;
   position: relative;
-
-  /* Padding for right rounded badge end */
   padding-right: 0.7em;
-
-  /* Adjust the gradient stops for a left margin before the green and a right margin after the word */
   background: linear-gradient(
     to right,
     transparent 0 70%,
@@ -290,8 +234,6 @@
   background-repeat: no-repeat;
   background-size: 100% 100%;
   border-radius: 0 1.5em 1.5em 0 / 0 50% 50% 0;
-
-  /* Overlay a faded edge using a mask-image for more advanced browsers */
   mask-image: linear-gradient(
     to right,
     black 0 69%,
@@ -319,4 +261,82 @@
       black 79% 100%
     );
   }
+}
+
+
+.hero.hero6 {
+  position: relative;
+  width: 100vw;
+  min-width: 0;
+  min-height: 0;
+  height: 220px;
+  max-height: 220px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: block;
+
+  /* Ensures no unwanted gap above the image/bar */
+}
+
+/* Absolutely position the image background to the top of the hero */
+.hero.hero6 > div:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure image fills area and matches crop of the original */
+.hero.hero6 picture,
+.hero.hero6 img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 38%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navigation bar overlay styling, overlays directly atop the image */
+.hero.hero6 > div:last-child {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 46px;
+  width: 100%;
+  background: rgb(255 255 255 / 94%);
+  z-index: 2;
+  padding: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* Responsive: thinner hero for smaller screens */
+@media (width <= 900px) {
+  .hero.hero6 {
+    height: 100px;
+    max-height: 100px;
+  }
+
+  .hero.hero6 > div:last-child {
+    height: 32px;
+  }
+}
+
+/* Allow the hero to span the full page width */
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
 }

@@ -1,4 +1,4 @@
-/* Disable no-descending-specificity as suggested */
+/* Disabling no-descending-specificity globally for the file */
 /* stylelint-disable no-descending-specificity */
 
 .hero-container .hero-wrapper {
@@ -240,7 +240,7 @@
   justify-content: center;
   flex-flow: row nowrap;
   text-align: center;
-  font-family: Fredoka One, Baloo, Arial, sans-serif;
+  font-family: "Fredoka One", Baloo, Arial, sans-serif;
   font-size: 32px;
   font-weight: 100;
   color: #e67c1c;
@@ -317,5 +317,93 @@
     border-right: 5px solid transparent;
     border-top: 5px solid #26a65b;
     bottom: -4px;
+  }
+}
+
+.hero.hero25 {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 0;
+  gap: 0;
+  background: transparent;
+  min-height: unset;
+  height: auto;
+}
+
+.hero.hero25 > div {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Triangle tail */
+.hero.hero25 > div:first-child {
+  width: 0;
+  height: 0;
+  border-left: 11px solid transparent;
+  border-right: 0 solid transparent;
+  border-top: 36px solid #00AD7A;
+  border-bottom: 0 solid transparent;
+  margin-right: -9px;   /* Overlap for seamless join */
+  margin-bottom: -12px; /* Drop triangle tip below badge center */
+  margin-left: 0;
+  flex-shrink: 0;
+  display: block;
+}
+
+.hero.hero25 > div:first-child > div {
+  display: none;
+}
+
+/* Pill badge */
+.hero.hero25 > div:nth-child(2) {
+  background: #00AD7A;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 10px 38px;  /* More left padding for gap between triangle and text */
+  min-height: 48px;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.hero.hero25 > div:nth-child(2) h1 {
+  color: #fff;
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.12;
+  text-align: center;
+  font-family: var(--heading-font-family);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  padding: 0;
+}
+
+/* Responsive: stack vertically on small screens, reduce badge size */
+@media (width <= 600px) {
+  .hero.hero25 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .hero.hero25 > div:first-child {
+    border-top-width: 22px;
+    border-left-width: 7px;
+    margin-right: -4px;
+    margin-bottom: -5px;
+  }
+
+  .hero.hero25 > div:nth-child(2) {
+    padding: 6px 18px 6px 14px;
+    min-height: 28px;
+    height: 28px;
+  }
+
+  .hero.hero25 > div:nth-child(2) h1 {
+    font-size: 18px;
+    white-space: normal;
   }
 }

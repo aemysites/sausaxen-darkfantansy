@@ -1,4 +1,4 @@
-/* Disable no-descending-specificity rule globally */
+/* Added stylelint disable comments for no-descending-specificity rule */
 /* stylelint-disable no-descending-specificity */
 
 .cards > ul {
@@ -275,7 +275,6 @@
   transition: box-shadow 0.2s;
 }
 
-/* Image Styling */
 .cards.cards10 .cards-card-image {
   line-height: 0;
 }
@@ -288,7 +287,6 @@
   border-radius: 20px 20px 0 0;
 }
 
-/* Info Bar (the <p> directly under image) */
 .cards.cards10 .cards-card-body > p {
   display: flex;
   flex-direction: row;
@@ -329,7 +327,6 @@
   }
 }
 
-/* Card Headline Styling */
 .cards.cards10 .cards-card-body h3 {
   font-family: 'Baloo 2', 'Comic Neue', Quicksand, cursive, sans-serif;
   font-size: 20px;
@@ -353,3 +350,156 @@
 .cards.cards10 ul > li:hover {
   box-shadow: 0 8px 32px rgb(36 36 36 / 17%);
 }
+
+
+.cards.cards11 > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 1088px;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  list-style: none;
+}
+
+/* Each step: horizontal row, text left, media right */
+.cards.cards11 > ul > li {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 48px;
+  width: 100%;
+  min-height: 200px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Text column (should be first, on the left) */
+.cards.cards11 > ul > li > .cards-card-body:last-of-type {
+  order: 1;
+  flex: 1 1 672px;
+  max-width: 672px;
+  min-width: 270px;
+  color: #222;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Title styling */
+.cards.cards11 > ul > li > .cards-card-body:last-of-type strong {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #222;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Paragraphs: clean and tidy */
+.cards.cards11 > ul > li > .cards-card-body:last-of-type p {
+  margin: 0 0 12px;
+  color: #222;
+  font-size: 16px;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-weight: 400;
+}
+
+/* Subtle duration line */
+.cards.cards11 > ul > li > .cards-card-body:last-of-type p br + * {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 2px;
+  font-size: 15px;
+  color: #444;
+}
+
+/* Media column (right side) */
+.cards.cards11 > ul > li > .cards-card-body:first-of-type {
+  order: 2;
+  flex: 0 0 350px;
+  width: 350px;
+  min-width: 200px;
+  max-width: 350px;
+  min-height: 200px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  background: #f5f5f5;
+  border-radius: 16px;
+  padding: 0;
+  margin: 0;
+
+  /* Remove border for real video/image, leave for placeholder only */
+}
+
+/* Hide blue button if present */
+.cards.cards11 > ul > li > .cards-card-body:first-of-type .button-container {
+  display: none;
+}
+
+/* Video element styling (if present) */
+.cards.cards11 > ul > li > .cards-card-body:first-of-type video {
+  display: block;
+  width: 350px;
+  height: 200px;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #000;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 8%);
+  max-width: 100%;
+}
+
+/* Remove fallback image in video cell */
+.cards.cards11 > ul > li > .cards-card-body:first-of-type img {
+  display: none;
+}
+
+/* Remove any border/background from all nested elements */
+.cards.cards11,
+.cards.cards11 > ul,
+.cards.cards11 .cards-card-body {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Responsive: stack columns vertically on small screens */
+@media (width <= 900px) {
+  .cards.cards11 > ul > li {
+    flex-direction: column;
+    gap: 20px;
+    min-height: unset;
+  }
+
+  .cards.cards11 > ul > li > .cards-card-body:first-of-type,
+  .cards.cards11 > ul > li > .cards-card-body:last-of-type {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    order: unset;
+  }
+
+  .cards.cards11 > ul > li > .cards-card-body:first-of-type {
+    min-height: 120px;
+  }
+
+  .cards.cards11 > ul > li > .cards-card-body:first-of-type video {
+    width: 100%;
+    height: 210px;
+    min-width: 0;
+  }
+}
+
+/* stylelint-enable */

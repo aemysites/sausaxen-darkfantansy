@@ -1,22 +1,38 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find all step containers (each step is a row)
-  const stepContainers = element.querySelectorAll(':scope > .set-width > .directions-detail-container');
+  // Find all directions-detail-container blocks (steps)
+  let stepContainers = [];
+  const setWidth = element.querySelector(':scope > .set-width');
+  if (setWidth) {
+    stepContainers = Array.from(setWidth.querySelectorAll(':scope > .directions-detail-container'));
+  } else {
+    // fallback if missing .set-width
+    stepContainers = Array.from(element.querySelectorAll(':scope > .directions-detail-container'));
+  }
 
-  // Header: must match exactly
-  const headerRow = ['Columns (columns32)'];
-  const rows = [headerRow];
+  // Prepare table rows
+  const cells = [];
+  // Header row exactly as required
+  cells.push(['Columns (columns32)']);
 
-  // For each step, construct a row with left (text) and right (video)
+  // For each step, create a row with 2 columns: text block and video
   stepContainers.forEach((step) => {
-    // Left cell: all content except the video
-    const left = step.querySelector('.directions-detail-text-container');
-    // Reference the left cell directly as it's already an existing element
-    // Right cell: video (reference video element directly, not clone)
-    const video = step.querySelector('video');
-    rows.push([left, video]);
+    // Left column: all text (heading, duration, description)
+    const detail = step.querySelector(':scope > .directions-detail');
+    let leftCol = null;
+    if (detail) {
+      leftCol = detail;
+    }
+    // Right column: the video (if any, including its source)
+    let rightCol = null;
+    const video = step.querySelector(':scope > video');
+    if (video) {
+      rightCol = video;
+    }
+    cells.push([leftCol, rightCol]);
   });
 
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+  // Create and replace table
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

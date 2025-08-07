@@ -1,71 +1,65 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Prepare table cells: header
-  const rows = [['Carousel (carousel3)']];
+  // Header row - must match exactly from instructions
+  const headerRow = ['Carousel (carousel3)'];
 
-  // Select all slides (direction steps)
-  const slides = element.querySelectorAll(':scope > .set-width > .directions-detail-container');
+  // Find all the slide containers
+  const stepContainers = element.querySelectorAll(':scope > .set-width > .directions-detail-container');
 
-  slides.forEach((slide) => {
-    // --- First cell: video link (per requirements: must not use video/embed, just the link) ---
-    let mediaCell = '';
-    const video = slide.querySelector('video');
+  const rows = [headerRow];
+
+  stepContainers.forEach((step) => {
+    // --- IMAGE/VIDEO COLUMN --- //
+    // Each step contains a video with a <source src> (mandatory for carousel)
+    let media = '';
+    const video = step.querySelector('video');
     if (video) {
-      const source = video.querySelector('source');
-      if (source && source.src) {
-        const a = document.createElement('a');
-        a.href = source.src;
-        a.textContent = source.src;
-        a.target = '_blank';
-        mediaCell = a;
-      }
+      // Reference the actual video element in the DOM
+      media = video;
     }
 
-    // --- Second cell: All text (heading, duration, directions) ---
-    const textCellArr = [];
-    const textContainer = slide.querySelector('.directions-detail-text-container');
+    // --- TEXT COLUMN --- //
+    const textContent = [];
+    const textContainer = step.querySelector('.directions-detail-text-container');
     if (textContainer) {
-      // Heading
+      // Heading (p.directions-heading-font)
       const heading = textContainer.querySelector('.directions-heading-font');
       if (heading && heading.textContent.trim()) {
+        // Use h2 for semantic heading, reference text
         const h2 = document.createElement('h2');
         h2.textContent = heading.textContent.trim();
-        textCellArr.push(h2);
+        textContent.push(h2);
       }
-      // Duration (get text node after the img in .duration-container)
-      const durationDiv = textContainer.querySelector('.duration-container');
-      if (durationDiv) {
-        let got = false;
-        durationDiv.childNodes.forEach((node) => {
-          if (got) return;
-          if (node.nodeType === 3 && node.textContent.trim()) {
-            const p = document.createElement('p');
-            p.textContent = node.textContent.trim();
-            textCellArr.push(p);
-            got = true;
-          }
+      // Duration (div.duration-container) -> just the text (skip img)
+      const duration = textContainer.querySelector('.duration-container');
+      if (duration) {
+        let durationText = '';
+        Array.from(duration.childNodes).forEach((node) => {
+          if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) durationText += node.textContent;
         });
+        if (durationText.trim()) {
+          const p = document.createElement('p');
+          p.textContent = durationText.trim();
+          textContent.push(p);
+        }
       }
-      // Main instructions (from .directions-detail-font)
-      const detailFont = textContainer.querySelector('.directions-detail-font');
-      if (detailFont) {
-        Array.from(detailFont.children).forEach(child => {
-          // Only add <ul>, <ol>, or <p> that have text/child elements
-          if ((child.tagName === 'UL' || child.tagName === 'OL') && child.children.length > 0) {
-            textCellArr.push(child);
-          } else if (child.tagName === 'P' && child.textContent.trim()) {
-            textCellArr.push(child);
-          }
+      // Description body (span.directions-detail-font)
+      const spanDetail = textContainer.querySelector('span.directions-detail-font');
+      if (spanDetail) {
+        // Add all child elements (p, ul, ol, etc.) if non-empty
+        Array.from(spanDetail.children).forEach((child) => {
+          if (child.textContent.trim()) textContent.push(child);
         });
       }
     }
-    // Always ensure both cells (media, text) are present for this row
+    // If no text, cell is empty string for compatibility
     rows.push([
-      mediaCell,
-      textCellArr.length > 0 ? textCellArr : ''
+      media,
+      textContent.length ? textContent : ''
     ]);
   });
-  // Create table & replace element
-  const block = WebImporter.DOMUtils.createTable(rows, document);
-  element.replaceWith(block);
+
+  // Create the table and replace the original element
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(table);
 }

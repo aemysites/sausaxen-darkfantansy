@@ -1,60 +1,56 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Helper to get direct children by selector
-  function getStepCards(root) {
-    // The structure is: .set-width > .directions-detail-container (repeat)
-    const main = root.querySelector(':scope > .set-width');
-    if (!main) return [];
-    return Array.from(main.querySelectorAll(':scope > .directions-detail-container'));
-  }
-
-  const cards = getStepCards(element);
-  const rows = [['Cards (cards29)']];
-
+  // Prepare header row as per example
+  const headerRow = ['Cards (cards29)'];
+  const rows = [];
+  // Each card is a .directions-detail-container
+  const cards = element.querySelectorAll('.directions-detail-container');
   cards.forEach(card => {
-    // Left cell: video (if present)
-    const video = card.querySelector('video');
-
-    // Right cell: heading (strong), duration (span), description (paragraphs)
-    const textContainer = card.querySelector('.directions-detail-text-container');
-    const rightCellContent = [];
-
-    if (textContainer) {
-      // Heading
-      const heading = textContainer.querySelector('.directions-heading-font');
-      if (heading && heading.textContent.trim()) {
+    // --- First cell: the duration container (icon + text)
+    let imageCell = '';
+    const duration = card.querySelector('.duration-container');
+    if (duration) imageCell = duration;
+    // --- Second cell: all text content (title + paragraphs)
+    const detail = card.querySelector('.directions-detail-text-container');
+    const cellContent = [];
+    if (detail) {
+      // Title
+      const title = detail.querySelector('.directions-heading-font');
+      if (title && title.textContent.trim()) {
         const strong = document.createElement('strong');
-        strong.textContent = heading.textContent.trim();
-        rightCellContent.push(strong);
-        rightCellContent.push(document.createElement('br'));
+        strong.textContent = title.textContent.trim();
+        cellContent.push(strong);
+        cellContent.push(document.createElement('br'));
       }
-      // Duration
-      const duration = textContainer.querySelector('.duration-container');
-      if (duration && duration.textContent.trim()) {
-        // Use only the text content (not the icon)
-        const durationText = duration.textContent.trim();
-        if (durationText) {
-          const span = document.createElement('span');
-          span.textContent = durationText;
-          span.style.display = 'block';
-          rightCellContent.push(span);
-          rightCellContent.push(document.createElement('br'));
-        }
-      }
-      // Description (all <p> inside .directions-detail-font)
-      const descBlock = textContainer.querySelector('.directions-detail-font');
-      if (descBlock) {
-        const ps = Array.from(descBlock.querySelectorAll('p')).filter(p => p.textContent.trim());
-        ps.forEach((p, idx) => {
-          rightCellContent.push(p);
-          if (idx !== ps.length - 1) rightCellContent.push(document.createElement('br'));
+      // All paragraphs in .directions-detail-font
+      const descSpan = detail.querySelector('.directions-detail-font');
+      if (descSpan) {
+        descSpan.querySelectorAll('p').forEach(p => {
+          if (p.textContent && p.textContent.trim() && p.textContent.trim() !== '\u00A0') {
+            cellContent.push(p);
+          }
         });
       }
     }
-    // Push row: [leftCell, rightCellContent]
-    rows.push([video, rightCellContent]);
+    // Add video CTA as a link if present
+    const video = card.querySelector('video');
+    if (video) {
+      const source = video.querySelector('source');
+      if (source && source.src) {
+        cellContent.push(document.createElement('br'));
+        const a = document.createElement('a');
+        a.href = source.src;
+        a.textContent = 'Watch Step';
+        cellContent.push(a);
+      }
+    }
+    // Remove trailing <br>
+    while (cellContent.length > 0 && cellContent[cellContent.length-1].tagName === 'BR') {
+      cellContent.pop();
+    }
+    rows.push([imageCell, cellContent]);
   });
-
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+  const tableCells = [headerRow, ...rows];
+  const table = WebImporter.DOMUtils.createTable(tableCells, document);
   element.replaceWith(table);
 }

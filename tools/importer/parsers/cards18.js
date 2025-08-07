@@ -1,50 +1,45 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Table header row exactly as specified
+  // Table header as specified
   const headerRow = ['Cards (cards18)'];
-
-  // Find the track that contains the cards
-  const track = element.querySelector('.slick-track');
-  const cardDivs = track ? Array.from(track.children) : [];
-
   const rows = [headerRow];
 
-  cardDivs.forEach((cardDiv) => {
-    // Find the card's image (required)
-    const img = cardDiv.querySelector('img');
-    // Find the card's title (Plating, Pairing, Garnishing)
-    const titleBox = cardDiv.querySelector('.orange-shadow-box');
+  // Find all card slides; each .slick-slide is a card
+  const slides = element.querySelectorAll('.slick-slide');
 
-    // We'll use a <strong> for the title just as the example uses a bold heading
-    let title = null;
+  slides.forEach((slide) => {
+    // Get image (first <img> descendant)
+    const img = slide.querySelector('img');
+    // Get card title from .orange-shadow-box
+    const titleBox = slide.querySelector('.orange-shadow-box');
+    // Get card description (first <p> in .description-font)
+    const descSpan = slide.querySelector('.description-font');
+    const descP = descSpan ? descSpan.querySelector('p') : null;
+
+    // Compose the text content cell
+    const textCell = [];
+    // Use <strong> for title to represent heading
     if (titleBox && titleBox.textContent.trim()) {
-      title = document.createElement('strong');
-      title.textContent = titleBox.textContent.trim();
-    }
-
-    // Find the card's description (inside .description-font > p)
-    const descFont = cardDiv.querySelector('.description-font');
-    let desc = null;
-    if (descFont) {
-      // Use the existing <p> (with <i> if present)
-      const p = descFont.querySelector('p');
-      if (p) {
-        desc = p;
-      } else {
-        desc = descFont;
+      const strong = document.createElement('strong');
+      strong.textContent = titleBox.textContent.trim();
+      textCell.push(strong);
+      // Add a line break between title and description if both exist
+      if (descP && descP.textContent.trim()) {
+        textCell.push(document.createElement('br'));
       }
     }
+    if (descP && descP.textContent.trim()) {
+      // Preserve <i> for italics if present
+      // Reference the existing <p> element rather than cloning
+      textCell.push(descP);
+    }
+    // If there is no description, but a title, keep just the title
+    // If neither, cell will be empty
 
-    // Compose the text cell: title (strong), <br>, description (if both)
-    // Only existing elements, no cloning
-    const textCell = [];
-    if (title) textCell.push(title);
-    if (title && desc) textCell.push(document.createElement('br'));
-    if (desc) textCell.push(desc);
-
+    // Add row: [image, textCell]
     rows.push([
-      img || '',
-      textCell.length ? textCell : ''
+      img,
+      textCell
     ]);
   });
 

@@ -1,48 +1,41 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the accordion container
+  // Locate the accordionDiv
   const accordionDiv = element.querySelector('.accordionDiv');
   if (!accordionDiv) return;
 
-  // Find all accordion items (questions)
-  const accordionItems = accordionDiv.querySelectorAll('.MuiAccordion-root');
-  const rows = [];
+  // Get all direct accordion panels
+  const panels = accordionDiv.querySelectorAll(':scope > .MuiPaper-root, :scope > .accordion');
+  const rows = [['Accordion']]; // Header row
 
-  // Add header row as per spec
-  rows.push(['Accordion']);
-
-  // Populate rows as [question, answer] pairs
-  accordionItems.forEach(item => {
-    // Title cell: get first visible <p> or content in .MuiAccordionSummary-content
-    let titleCell = '';
-    const summary = item.querySelector('.MuiAccordionSummary-content');
+  panels.forEach(panel => {
+    // Title cell: Find the p inside the summary
+    let questionEl = null;
+    const summary = panel.querySelector('.MuiAccordionSummary-content, .MuiAccordionSummary-contentGutters');
     if (summary) {
-      const p = summary.querySelector('p');
-      titleCell = p ? p : summary;
+      questionEl = summary.querySelector('p') || summary;
     }
-    
-    // Content cell: get first .expandContent (or fallback to .MuiAccordionDetails-root)
-    let contentCell = '';
-    const details = item.querySelectorAll('.MuiAccordionDetails-root');
-    for (const detail of details) {
-      // Look for .expandContent with non-empty text
-      const expandContent = detail.querySelector('.expandContent');
-      if (expandContent && expandContent.textContent.trim()) {
-        contentCell = expandContent;
-        break;
-      } else if (detail.textContent.trim()) {
-        contentCell = detail;
-        break;
-      }
+    if (!questionEl) {
+      // Fallback to panel text
+      questionEl = document.createTextNode(panel.textContent.trim());
     }
-    // Add the row
-    rows.push([
-      titleCell,
-      contentCell
-    ]);
+
+    // Content cell: Find the answer/expanded content
+    let answerEl = null;
+    // Find the details span.expandContent or the container of the answer
+    const details = panel.querySelector('.MuiAccordionDetails-root .expandContent');
+    if (details) {
+      // Only grab the main <p> or the expandContent span
+      const p = details.querySelector('p');
+      answerEl = p ? p : details;
+    }
+    // Fallback to an empty cell
+    if (!answerEl) {
+      answerEl = document.createTextNode('');
+    }
+    rows.push([questionEl, answerEl]);
   });
 
-  // Create the block table and replace
-  const block = WebImporter.DOMUtils.createTable(rows, document);
-  element.replaceWith(block);
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(table);
 }

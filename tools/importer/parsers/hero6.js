@@ -1,39 +1,48 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row must match the example exactly
+  // Header row for block name
   const headerRow = ['Hero (hero6)'];
 
-  // 2nd row: Background Image (optional)
-  // Get the first <img> in the block
-  const imgEl = element.querySelector('img');
-  const imageRow = [imgEl ? imgEl : ''];
+  // Get the main carousel image (the recipe-image inside the current active slide)
+  let imgEl = null;
+  const activeLi = element.querySelector('.slider li.slide.selected, .slider li.slide');
+  if (activeLi) {
+    imgEl = activeLi.querySelector('img.recipe-image');
+  }
+  if (!imgEl) {
+    imgEl = element.querySelector('img.recipe-image');
+  }
+  const backgroundRow = [imgEl ? imgEl : ''];
 
-  // 3rd row: Title, Subheading, CTA, etc. (all text content)
-  // Try to find a wrapper for headline/subheadline
-  let contentParent = element.querySelector('.absolute-content-carousel');
-  let contentRowContent = '';
-  if (contentParent) {
-    // Use all children of the content container
-    const children = Array.from(contentParent.children);
-    contentRowContent = children.length ? children : '';
-  } else {
-    // Fallback: look for any <p>, <h1>-<h6> directly under the carousel/container
-    const possibleContent = Array.from(element.querySelectorAll('p, h1, h2, h3, h4, h5, h6'));
-    // Filter out anything that is inside .absolute-content-carousel if present
-    if (possibleContent.length) {
-      contentRowContent = possibleContent;
-    } else {
-      // Nothing found
-      contentRowContent = '';
+  // 3rd row: Headline, subheadline, CTA (optional)
+  // These are inside .absolute-content-carousel
+  let textContentCell = '';
+  if (imgEl && imgEl.parentElement) {
+    const absContent = imgEl.parentElement.querySelector('.absolute-content-carousel');
+    if (absContent) {
+      // Collect all children (p, h1-h6, a, etc) that have non-empty text
+      const nodes = Array.from(absContent.childNodes)
+        .filter(node => {
+          if (node.nodeType === 1) {
+            return node.textContent && node.textContent.trim().length > 0;
+          }
+          return false;
+        });
+      if (nodes.length > 0) {
+        const frag = document.createElement('div');
+        nodes.forEach(node => frag.appendChild(node));
+        textContentCell = frag;
+      }
     }
   }
+  const textRow = [textContentCell];
 
-  // Compose table: 3 rows, 1 column
   const cells = [
     headerRow,
-    imageRow,
-    [contentRowContent]
+    backgroundRow,
+    textRow
   ];
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(block);
+
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(table);
 }

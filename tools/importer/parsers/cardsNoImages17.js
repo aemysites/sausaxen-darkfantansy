@@ -1,32 +1,26 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Block header must match example exactly
+  // Table header must match exactly
   const headerRow = ['Cards (cardsNoImages17)'];
+  const cells = [headerRow];
 
-  // Find all card containers directly under the root element
-  const cardDivs = element.querySelectorAll(':scope > .box-container');
-
-  // Build one row per card
-  const rows = Array.from(cardDivs).map((cardDiv) => {
-    // The label text for the card
-    const blankBox = cardDiv.querySelector('.blank-box');
-    let text = '';
-    if (blankBox && blankBox.textContent) {
-      text = blankBox.textContent.trim();
+  // Get all immediate .box-container children
+  const boxContainers = element.querySelectorAll(':scope > .box-container');
+  boxContainers.forEach((box) => {
+    // Find .blank-box inside .box-container
+    const blankBox = box.querySelector('.blank-box');
+    let content = '';
+    if (blankBox) {
+      content = blankBox.textContent || '';
+      content = content.trim().replace(/\s+/g, ' ');
     }
-    // Only create a <strong> if there is text
-    if (text) {
-      const strong = document.createElement('strong');
-      strong.textContent = text;
-      return [strong];
+    // Only add if there's non-empty content
+    if (content) {
+      cells.push([content]);
     }
-    return [''];
   });
 
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    ...rows,
-  ], document);
-
+  // Create table and replace original element
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

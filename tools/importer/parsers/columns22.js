@@ -1,22 +1,41 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Extract left and right column content
-  const left = element.querySelector('.vegLeftCurve');
-  const right = element.querySelector('.vegRightCurve');
-  const leftContent = left || document.createElement('div');
-  const rightContent = right || document.createElement('div');
-
-  // Build the table with a one-cell header row, and a two-cell content row
-  // After table creation, set the colspan on the header row <th>
-  const cells = [
-    ['Columns (columns22)'],
-    [leftContent, rightContent],
-  ];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  // Set colspan=2 on header's single <th>
-  const headerRow = table.querySelector('tr');
-  if (headerRow && headerRow.children.length === 1) {
-    headerRow.children[0].setAttribute('colspan', '2');
+  // Helper to extract the image(s) and text from each side
+  function getColumnContent(curveDiv) {
+    const imgs = Array.from(curveDiv.querySelectorAll('img'));
+    const textDiv = curveDiv.querySelector('div');
+    const cells = [];
+    if (imgs.length > 0) {
+      cells.push(...imgs);
+    }
+    if (textDiv) {
+      cells.push(textDiv);
+    }
+    return cells;
   }
+
+  const leftCurve = element.querySelector('.vegLeftCurve');
+  const rightCurve = element.querySelector('.vegRightCurve');
+
+  // Defensive: fall back to empty arrays if missing
+  const leftContent = leftCurve ? getColumnContent(leftCurve) : [];
+  const rightContent = rightCurve ? getColumnContent(rightCurve) : [];
+
+  // Header row is a single cell array, as per the markdown example
+  const headerRow = ['Columns (columns22)'];
+  // Content row is an array with each column's content as a separate cell
+  const contentRow = [leftContent, rightContent];
+
+  const table = WebImporter.DOMUtils.createTable([
+    headerRow,
+    contentRow
+  ], document);
+
+  // Make sure the header <th> spans across all columns
+  const th = table.querySelector('th');
+  if (th && contentRow.length > 1) {
+    th.setAttribute('colspan', contentRow.length);
+  }
+
   element.replaceWith(table);
 }

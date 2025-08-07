@@ -1,61 +1,40 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Table header must exactly match: 'Hero (hero27)'
+  // Block header row
   const headerRow = ['Hero (hero27)'];
 
-  // Get the first image in the block (background image)
+  // Row 2: Background Image (optional)
+  // Find first image in the block, if any
   const img = element.querySelector('img');
+  const imgRow = [img ? img : ''];
 
-  // Find content container (headings, subheading, button)
-  const contentContainer = element.querySelector('.content-font-container');
-
-  // Second row: image only, or null if not found
-  const imageRow = [img || ''];
-
-  // Third row: Title (as heading), Subheading (as p), CTA (as a link)
-  const content = [];
-  if (contentContainer) {
-    // Title
-    const heading = contentContainer.querySelector('.right-heading');
-    if (heading) {
-      // Use as h1 since it's the main hero heading
-      const h1 = document.createElement('h1');
-      h1.textContent = heading.textContent;
-      content.push(h1);
+  // Row 3: Title, Subheading, CTA
+  // Find text content and CTA button
+  let contentCell = [];
+  const content = element.querySelector('.content-font-container');
+  if (content) {
+    // We want to preserve the existing elements (not clone)
+    // We'll gather all direct children of the content container
+    const children = Array.from(content.childNodes).filter(node => {
+      // Include element nodes and non-empty text nodes
+      return (node.nodeType === 1) || (node.nodeType === 3 && node.textContent.trim());
+    });
+    if (children.length > 0) {
+      contentCell = children;
+    } else {
+      // Fallback in case all children are empty
+      contentCell = [''];
     }
-    // Subheading
-    const subheading = contentContainer.querySelector('.right-content-font');
-    if (subheading) {
-      // Make it a p tag
-      const p = document.createElement('p');
-      p.textContent = subheading.textContent;
-      content.push(p);
-    }
-    // CTA button (convert to a link, preserve text and aria-label if any)
-    const button = contentContainer.querySelector('button');
-    if (button) {
-      const a = document.createElement('a');
-      a.textContent = button.textContent;
-      a.href = '#';
-      if (button.hasAttribute('aria-label')) {
-        a.setAttribute('aria-label', button.getAttribute('aria-label'));
-      }
-      // Optionally add button classes for style reference
-      if (button.className) {
-        a.className = button.className;
-      }
-      content.push(a);
-    }
+  } else {
+    // If no content container, just leave empty
+    contentCell = [''];
   }
-  const contentRow = [content.length ? content : ''];
+  const contentRow = [contentCell];
 
-  // Compose block table (1 column, 3 rows: header, image, content)
-  const cells = [
-    headerRow,
-    imageRow,
-    contentRow
-  ];
+  // Compose the table rows
+  const rows = [headerRow, imgRow, contentRow];
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  // Create and replace
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

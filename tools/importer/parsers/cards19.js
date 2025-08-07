@@ -1,83 +1,64 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Helper to safely get child by selector, returns null if not found
-  function safeQuery(sel, parent) {
-    return parent ? parent.querySelector(sel) : null;
-  }
-
+  // Table header as specified
   const headerRow = ['Cards (cards19)'];
   const cards = [];
 
-  // Each .filterMainDiv contains a card
-  const cardContainers = element.querySelectorAll(':scope > .filterMainDiv');
-  cardContainers.forEach((mainDiv) => {
-    // Each .filterMainDiv > .loadMoreCards > .topRecipesDiv > a (card link)
-    const topRecipesDiv = safeQuery(':scope > .loadMoreCards > .topRecipesDiv', mainDiv);
-    if (!topRecipesDiv) return;
-    const cardLink = safeQuery(':scope > a', topRecipesDiv);
-    if (!cardLink) return;
+  // Get all cards: from .filterMainDiv > .loadMoreCards > .topRecipesDiv > a > .recipe-card-container
+  const filterMainDivs = element.querySelectorAll(':scope > .filterMainDiv');
+  filterMainDivs.forEach((mainDiv) => {
+    const loadMoreCards = mainDiv.querySelector(':scope > .loadMoreCards');
+    if (!loadMoreCards) return;
+    const topRecipesDivs = loadMoreCards.querySelectorAll(':scope > .topRecipesDiv');
+    topRecipesDivs.forEach((recipesDiv) => {
+      const a = recipesDiv.querySelector('a');
+      if (!a) return;
+      const card = a.querySelector('.recipe-card-container');
+      if (!card) return;
 
-    // Find image for the recipe in .recipe-image-container > img.topRecipeImage
-    let imageElem = null;
-    const recipeImgContainer = safeQuery('.recipe-image-container', cardLink);
-    if (recipeImgContainer) {
-      imageElem = safeQuery('img.topRecipeImage', recipeImgContainer);
-    }
+      // First cell: image (main recipe image only)
+      let mainImg = null;
+      const imageContainer = card.querySelector('.recipe-image-container');
+      if (imageContainer) {
+        // Main card image is the one with class 'topRecipeImage'
+        mainImg = imageContainer.querySelector('img.topRecipeImage') || imageContainer.querySelector('img');
+      }
+      if (!mainImg) {
+        // fallback in unlikely case
+        mainImg = card.querySelector('img.topRecipeImage') || card.querySelector('img');
+      }
 
-    // Compose the text cell
-    const textBits = [];
-    // Type/category, e.g. 'Veg', 'Non Veg', etc
-    const typeElem = safeQuery('.bottomText .text', cardLink);
-    if (typeElem && typeElem.textContent.trim()) {
-      const typeDiv = document.createElement('div');
-      typeDiv.textContent = typeElem.textContent.trim();
-      textBits.push(typeDiv);
-    }
-    // Title in strong
-    const titleElem = safeQuery('.bigTextDiv .bigText', cardLink);
-    if (titleElem && titleElem.textContent.trim()) {
-      const titleDiv = document.createElement('div');
-      const strong = document.createElement('strong');
-      strong.textContent = titleElem.textContent.trim();
-      titleDiv.appendChild(strong);
-      textBits.push(titleDiv);
-    }
-    // Meta info block: time and difficulty
-    const leftSpan = safeQuery('.yellowDiv .leftText .leftSpan', cardLink);
-    const rightSpan = safeQuery('.yellowDiv .rightText .rightSpan', cardLink);
-    if ((leftSpan && leftSpan.textContent.trim()) || (rightSpan && rightSpan.textContent.trim())) {
-      const metaDiv = document.createElement('div');
-      if (leftSpan && leftSpan.textContent.trim()) {
-        const timeSpan = document.createElement('span');
-        timeSpan.textContent = leftSpan.textContent.trim();
-        metaDiv.appendChild(timeSpan);
+      // Second cell: text/meta
+      const textCellItems = [];
+      // Category (veg/non-veg/vegan)
+      const categoryEl = card.querySelector('.bottomText .text');
+      if (categoryEl) {
+        const catDiv = document.createElement('div');
+        catDiv.textContent = categoryEl.textContent.trim();
+        textCellItems.push(catDiv);
       }
-      if (rightSpan && rightSpan.textContent.trim()) {
-        // add separator if both exist
-        if (leftSpan && leftSpan.textContent.trim()) {
-          metaDiv.appendChild(document.createTextNode(' | '));
-        }
-        const diffSpan = document.createElement('span');
-        diffSpan.textContent = rightSpan.textContent.trim();
-        metaDiv.appendChild(diffSpan);
+      // Title
+      const titleEl = card.querySelector('.bigTextDiv .bigText');
+      if (titleEl) {
+        const titleDiv = document.createElement('div');
+        titleDiv.style.fontWeight = 'bold';
+        titleDiv.textContent = titleEl.textContent.trim();
+        textCellItems.push(titleDiv);
       }
-      textBits.push(metaDiv);
-    }
-    // Compose cell
-    let textCell = null;
-    if (textBits.length === 1) {
-      textCell = textBits[0];
-    } else if (textBits.length > 1) {
-      textCell = document.createElement('div');
-      textBits.forEach(e => textCell.appendChild(e));
-    }
-    // Always add [image, textCell] row if at least image or textCell exists
-    if (imageElem || textCell) {
-      cards.push([imageElem, textCell]);
-    }
+      // Meta info (time and difficulty)
+      const yellowDiv = card.querySelector('.yellowDiv');
+      if (yellowDiv) {
+        // Reference the element directly
+        textCellItems.push(yellowDiv);
+      }
+
+      // Push row: always two columns
+      cards.push([mainImg, textCellItems]);
+    });
   });
-  // Compose table rows
-  const rows = [headerRow, ...cards];
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+
+  // Compose the table
+  const cells = [headerRow, ...cards];
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

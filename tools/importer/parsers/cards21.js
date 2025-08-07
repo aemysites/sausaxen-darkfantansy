@@ -1,48 +1,47 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main scroll view container
-  const scrollView = element.querySelector('.timestampsScrollView');
-  if (!scrollView) return;
+  // Header row as specified
+  const headerRow = ['Cards (cards21)'];
+  const cells = [headerRow];
 
-  // Get all direct children of scrollView that contain a .timeStampContainer (these are cards)
-  const cardCandidates = Array.from(scrollView.querySelectorAll(':scope > div'));
-  const cardDivs = cardCandidates.filter(div => div.querySelector('.timeStampContainer'));
+  // Get all timestamp card containers
+  const cardContainers = element.querySelectorAll('.timeStampContainer');
 
-  // Prepare the table rows
-  const rows = [['Cards (cards21)']]; // Header row as per block name
+  cardContainers.forEach(card => {
+    // Image: always in a child div with padding, contains .timestampThumbnail
+    let img = null;
+    const imgDiv = card.querySelector('div[style*="padding"]');
+    if (imgDiv) {
+      img = imgDiv.querySelector('img.timestampThumbnail');
+    }
 
-  cardDivs.forEach(cardWrap => {
-    const card = cardWrap.querySelector('.timeStampContainer');
-    if (!card) return;
-    // Image: .timestampThumbnail img
-    const img = card.querySelector('img.timestampThumbnail');
-    // Text content block
-    const contentFragment = document.createElement('div');
-    // Time (as bold text, on top)
-    const timeSpan = card.querySelector('.timeBoxContainer .timeBox span');
+    // Time: in .timeBox span
+    let timeDiv = null;
+    const timeSpan = card.querySelector('.timeBox span');
     if (timeSpan && timeSpan.textContent.trim()) {
-      const boldTime = document.createElement('b');
-      boldTime.textContent = timeSpan.textContent.trim();
-      contentFragment.appendChild(boldTime);
-      contentFragment.appendChild(document.createElement('br'));
+      timeDiv = document.createElement('div');
+      timeDiv.textContent = timeSpan.textContent.trim();
+      // No need for extra inline styles, let downstream handle formatting
     }
-    // Title
-    const title = card.querySelector('.timestampTitle');
-    if (title && title.textContent.trim()) {
-      const h4 = document.createElement('h4');
-      h4.textContent = title.textContent.trim();
-      contentFragment.appendChild(h4);
+
+    // Title: .timestampTitle (if present)
+    let title = card.querySelector('.timestampTitle');
+    // Subtitle: .timestampSubtitle (if present)
+    let subtitle = card.querySelector('.timestampSubtitle');
+
+    // Assemble the text content cell
+    const textCellContent = [];
+    if (timeDiv) textCellContent.push(timeDiv);
+    if (title) textCellContent.push(title);
+    if (subtitle) textCellContent.push(subtitle);
+
+    // Only add the card if it has at least image and some text (per spec)
+    if (img && textCellContent.length > 0) {
+      cells.push([img, textCellContent]);
     }
-    // Subtitle/Description
-    const subtitle = card.querySelector('.timestampSubtitle');
-    if (subtitle && subtitle.textContent.trim()) {
-      const p = document.createElement('p');
-      p.textContent = subtitle.textContent.trim();
-      contentFragment.appendChild(p);
-    }
-    rows.push([img, contentFragment]);
   });
 
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+  // Create and replace with the table
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

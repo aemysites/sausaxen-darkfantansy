@@ -1,11 +1,11 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // The input HTML contains only a decorative divider, not actual cards content.
-  // The block should only produce the header row, as there is no card data/content present.
-  // The header must exactly match: 'Cards (cards24)'
+  // The provided HTML is just a decorative divider, not a real card grid.
+  // There is no text content or card structure to extract.
+  // The correct block is a table with only the block name as header.
   const cells = [
     ['Cards (cards24)']
   ];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(table);
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(block);
 }

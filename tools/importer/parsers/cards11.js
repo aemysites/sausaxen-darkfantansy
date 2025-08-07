@@ -1,67 +1,49 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row as in the example
+  // Header row for the cards block
   const headerRow = ['Cards (cards11)'];
+
+  // Find all direct card containers
+  const cardContainers = element.querySelectorAll('.directions-detail-container');
+
   const rows = [headerRow];
 
-  // Each card is a .directions-detail-container
-  const cardContainers = element.querySelectorAll('.directions-detail-container');
-  cardContainers.forEach((cardEl) => {
-    // -------- Media/Video cell --------
-    let mediaCell = null;
-    const video = cardEl.querySelector('video');
-    if (video) {
-      const src = video.querySelector('source')?.src;
-      if (src) {
-        const a = document.createElement('a');
-        a.href = src;
-        a.textContent = 'Video';
-        a.target = '_blank';
-        mediaCell = a;
-      }
-    }
-    // -------- Text cell --------
-    const textDiv = document.createElement('div');
-    const textContainer = cardEl.querySelector('.directions-detail-text-container');
+  cardContainers.forEach((card) => {
+    // --- Left cell: video element (reference directly, no clone)
+    const video = card.querySelector('video');
+    const leftCell = video || '';
+
+    // --- Right cell: all text content as in the visual structure ---
+    const textEls = [];
+    const textContainer = card.querySelector('.directions-detail-text-container');
     if (textContainer) {
-      // Heading (strong)
+      // Heading (use as-is)
       const heading = textContainer.querySelector('.directions-heading-font');
-      if (heading) {
-        const strong = document.createElement('strong');
-        strong.textContent = heading.textContent.trim();
-        textDiv.appendChild(strong);
-        textDiv.appendChild(document.createElement('br'));
-      }
-      // Duration text (skip icon)
+      if (heading) textEls.push(heading);
+      // Duration (use as-is)
       const duration = textContainer.querySelector('.duration-container');
-      if (duration) {
-        // Only text nodes (skipping img)
-        Array.from(duration.childNodes).forEach((node) => {
-          if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
-            textDiv.appendChild(document.createTextNode(node.textContent.trim()));
-            textDiv.appendChild(document.createElement('br'));
-          }
-        });
-      }
-      // Description: all <p> under .directions-detail-font, or fallback all <p>
-      let descFound = false;
-      const detailFont = textContainer.querySelector('.directions-detail-font');
-      if (detailFont) {
-        detailFont.querySelectorAll('p').forEach((p) => {
-          descFound = true;
-          // Reference existing element
-          textDiv.appendChild(p);
-        });
-      }
-      if (!descFound) {
-        textContainer.querySelectorAll('p').forEach((p) => {
-          textDiv.appendChild(p);
+      if (duration) textEls.push(duration);
+      // Description (use as-is, all <p> in .directions-detail-font)
+      const descrWrap = textContainer.querySelector('.directions-detail-font');
+      if (descrWrap) {
+        // May contain multiple <p>
+        Array.from(descrWrap.querySelectorAll('p')).forEach((p) => {
+          if (p.textContent.trim()) textEls.push(p);
         });
       }
     }
-    rows.push([mediaCell, textDiv]);
+    // Build cell: if only one element, use just that, else use array
+    let rightCell;
+    if (textEls.length === 1) {
+      rightCell = textEls[0];
+    } else if (textEls.length > 1) {
+      rightCell = textEls;
+    } else {
+      rightCell = '';
+    }
+    rows.push([leftCell, rightCell]);
   });
-  // Create and replace
+
   const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

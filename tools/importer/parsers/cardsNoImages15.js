@@ -1,18 +1,24 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Table header must match exactly
+  // Compose the table header as in the example
   const headerRow = ['Cards (cardsNoImages15)'];
-  const rows = [headerRow];
 
-  // Get all .blogTextDivs representing cards
-  const blogTextDivs = element.querySelectorAll('.blogTextDiv');
-  blogTextDivs.forEach(div => {
-    // Defensive: only add non-empty cards
-    if (div && div.textContent.trim() !== '') {
-      rows.push([div]); // Use existing node reference
-    }
+  // Collect all .blurbCardDiv elements which represent the cards
+  const cardDivs = element.querySelectorAll('.blurbCardDiv');
+
+  // For each card, extract its content block (the blogTextDiv)
+  const rows = Array.from(cardDivs).map((cardDiv) => {
+    // blogTextDiv usually contains a <p> with the content
+    let contentDiv = cardDiv.querySelector('.blogTextDiv');
+    // Fallback: if not found, use cardDiv itself
+    const cellContent = contentDiv ? contentDiv : cardDiv;
+    return [cellContent];
   });
 
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+  // Final table data (header, then one row per card)
+  const tableData = [headerRow, ...rows];
+  const table = WebImporter.DOMUtils.createTable(tableData, document);
+
+  // Replace the original element with the newly created table
   element.replaceWith(table);
 }

@@ -1,35 +1,27 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row must be a single column with the block name
-  const headerRow = ['Tabs (tab23)'];
-
-  // Find all direct tab wrappers in the bubbleDiv
-  const tabWrappers = Array.from(element.children).filter(
-    (child) => child.querySelector('.box-container')
-  );
-
-  // For each tab, extract the label (element), and content (empty string, as in the screenshots)
-  const tabRows = tabWrappers.map((tabWrap) => {
-    let labelEl = tabWrap.querySelector('.orange-shadow-box, .grey-blank-box');
-    // Fallback: first div in box-container
-    if (!labelEl) {
-      const boxContainer = tabWrap.querySelector('.box-container');
-      if (boxContainer) {
-        const firstDiv = boxContainer.querySelector('div');
-        if (firstDiv) labelEl = firstDiv;
-      }
-    }
-    // Defensive: skip row if we can't find the label
-    if (!labelEl) return null;
-    // Each tab row is two columns: [tab label element, empty string]
-    return [labelEl, ''];
-  }).filter(Boolean);
-
-  // Compose final cells array: header is a single cell row, then all tab rows
-  const cells = [headerRow, ...tabRows];
-
-  // Create the table
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-  // Replace the original element with the new block table
-  element.replaceWith(block);
+  // Get all direct tab wrappers
+  const tabWrappers = element.querySelectorAll(':scope > div');
+  // Prepare rows for the table.
+  // We need to determine the number of columns for content rows (should be 2 for label/content)
+  // Header row: single cell. Content rows: 2 cells (label, content)
+  const rows = [];
+  // Header row: single cell
+  rows.push(['Tabs (tab23)']);
+  // Each tab row: [label, content]
+  tabWrappers.forEach((tabWrap) => {
+    // Find the label: within .box-container > div[class$='box']
+    const labelDiv = tabWrap.querySelector('.box-container > div[class$="box"]');
+    const label = labelDiv ? labelDiv.textContent.trim() : '';
+    // For this HTML, there is no content block shown for the tab, so use empty string
+    rows.push([label, '']);
+  });
+  // Create table
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  // Make the header row span two columns
+  const firstRow = table.querySelector('tr');
+  if (firstRow && firstRow.children.length === 1) {
+    firstRow.children[0].setAttribute('colspan', '2');
+  }
+  element.replaceWith(table);
 }

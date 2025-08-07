@@ -1,21 +1,20 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Build the block's table as per the requirements:
-  // Header: 'Search'
-  // Second row: must contain all content, including all text, as one cell
+  // Header row as per block specification
+  const headerRow = ['Search'];
 
-  // Gather all relevant content from the element,
-  // including all direct children (headings, search bar, button, etc) to preserve text content
-  const content = Array.from(element.children);
-  // If the element has no children (edge case), include itself
-  const cellContent = content.length ? content : [element];
+  // Create a container to hold all content (to retain structure and text)
+  const content = document.createElement('div');
+  // Move all children (not just direct children elements, but also text nodes) into our content container
+  while (element.firstChild) {
+    content.appendChild(element.firstChild);
+  }
 
-  // Build the table structure
-  const cells = [
-    ['Search'],
-    [cellContent]
-  ];
+  // Table: header, then all original content (which contains all structure and text, preserving semantic meaning)
+  const table = WebImporter.DOMUtils.createTable([
+    headerRow,
+    [content],
+  ], document);
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

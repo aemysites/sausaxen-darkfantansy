@@ -1,77 +1,67 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Table header as in the example
-  const rows = [['Cards (cards12)']];
-
-  // Select all slides (cards)
-  const slides = element.querySelectorAll('.slick-slide');
-
-  slides.forEach((slide) => {
-    // The anchor wrapping the card content
-    const cardLink = slide.querySelector('.topRecipesDiv > a');
-    if (!cardLink) return;
-
-    // --- Cell 1: Main image (reference existing element) ---
-    const mainImg = cardLink.querySelector('.recipe-image-container img');
-    const firstCell = mainImg || '';
-
-    // --- Cell 2: All main text content from the card ---
-    const cell2 = document.createElement('div');
-
-    // 1. Title (big text, bold)
-    const title = cardLink.querySelector('.bigTextDiv .bigText');
-    if (title) {
-      const strong = document.createElement('strong');
-      strong.textContent = title.textContent.trim();
-      cell2.appendChild(strong);
-      cell2.appendChild(document.createElement('br'));
+  // Helper: collect text content for the card text cell
+  function getTextCell(cardContainer) {
+    const textContent = [];
+    // 1. Card label (e.g., 'Veg + Egg')
+    const label = cardContainer.querySelector('.recipeTextDiv .bottomText .text');
+    if (label && label.textContent.trim()) {
+      const p = document.createElement('p');
+      p.textContent = label.textContent.trim();
+      textContent.push(p);
     }
-
-    // 2. Description (e.g., "Veg + Egg")
-    const desc = cardLink.querySelector('.bottomText .text');
-    if (desc) {
-      cell2.appendChild(document.createTextNode(desc.textContent.trim()));
-      cell2.appendChild(document.createElement('br'));
+    // 2. Main title (e.g., 'Butter Pecan Ice Cream.')
+    const title = cardContainer.querySelector('.bigTextDiv .bigText');
+    if (title && title.textContent.trim()) {
+      const h3 = document.createElement('h3');
+      h3.textContent = title.textContent.trim();
+      textContent.push(h3);
     }
-
-    // 3. Like count (if present)
-    const like = cardLink.querySelector('.like-image span');
-    if (like) {
-      const likeDiv = document.createElement('div');
-      likeDiv.textContent = `Likes: ${like.textContent.trim()}`;
-      cell2.appendChild(likeDiv);
-    }
-
-    // 4. Time & Difficulty (yellowSubDiv)
-    const yellow = cardLink.querySelector('.yellowDiv .yellowSubDiv');
-    if (yellow) {
-      const left = yellow.querySelector('.leftText');
-      const right = yellow.querySelector('.rightText');
-      const detailArr = [];
+    // 3. Yellow info bar (time and difficulty)
+    const yellowBar = cardContainer.querySelector('.yellowDiv .yellowSubDiv');
+    if (yellowBar) {
+      const left = yellowBar.querySelector('.leftText .leftSpan');
+      const right = yellowBar.querySelector('.rightText .rightSpan');
+      let info = '';
       if (left && left.textContent.trim()) {
-        detailArr.push(left.textContent.replace(/\s+/g, ' ').trim());
+        info += left.textContent.trim();
+      }
+      if ((left && left.textContent.trim()) && (right && right.textContent.trim())) {
+        info += ' | ';
       }
       if (right && right.textContent.trim()) {
-        detailArr.push(right.textContent.replace(/\s+/g, ' ').trim());
+        info += right.textContent.trim();
       }
-      if (detailArr.length) {
-        const details = document.createElement('div');
-        details.textContent = detailArr.join(' | ');
-        cell2.appendChild(details);
+      if (info) {
+        const p = document.createElement('p');
+        p.textContent = info;
+        textContent.push(p);
       }
     }
+    return textContent;
+  }
 
-    // Fallback: If cell2 is empty, put all text content from cardLink
-    if (!cell2.textContent.trim()) {
-      cell2.textContent = cardLink.textContent.trim();
-    }
-
-    rows.push([
-      firstCell,
-      cell2
-    ]);
+  // Find all .slick-slide elements representing the cards
+  const cardSlides = element.querySelectorAll('.slick-slide');
+  const rows = [['Cards (cards12)']];
+  cardSlides.forEach((slide) => {
+    // Find anchor containing the recipe-card-container
+    const anchor = slide.querySelector('a[href]');
+    if (!anchor) return; // skip if missing
+    const cardContainer = anchor.querySelector('.recipe-card-container');
+    if (!cardContainer) return; // skip if missing
+    // Find card image (the recipe photo)
+    const mainImg = cardContainer.querySelector('.recipe-image-container img.topRecipeImage');
+    // Fallback: If no image, cell will be null
+    const imgCell = mainImg || '';
+    // Text cell
+    const textCell = getTextCell(cardContainer);
+    rows.push([imgCell, textCell]);
   });
 
-  const table = WebImporter.DOMUtils.createTable(rows, document);
-  element.replaceWith(table);
+  // Only replace if there is at least one card (header + content)
+  if (rows.length > 1) {
+    const table = WebImporter.DOMUtils.createTable(rows, document);
+    element.replaceWith(table);
+  }
 }

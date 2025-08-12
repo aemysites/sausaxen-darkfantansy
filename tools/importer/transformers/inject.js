@@ -30,15 +30,28 @@
     // remove login popup container if present (e.g., on foodiesonly.in)
     document.querySelector('.login-popup-container')?.remove();
   
-    // remove left navigation, header, and footer elements if present
-    [
+    // selectors we always want removed
+    const UNWANTED_SELECTORS = [
       '.left-nav',
       'header.header',
       'footer.footer',
       // FoodiesOnly specific header / footer selectors
       '.navbar',
       'div[class^="footer_"]', // footer element has hashed BEM/CSS-module class starting with footer_
-    ].forEach((selector) => {
-      document.querySelectorAll(selector).forEach((el) => el.remove());
+    ];
+
+    const removeUnwanted = () => {
+      UNWANTED_SELECTORS.forEach((selector) => {
+        document.querySelectorAll(selector).forEach((el) => el.remove());
+      });
+    };
+
+    // run once immediately
+    removeUnwanted();
+
+    // keep watching – some sites re-inject these elements on scroll / route change
+    const observer = new MutationObserver(() => {
+      removeUnwanted();
     });
+    observer.observe(document.body, { childList: true, subtree: true });
   })();
